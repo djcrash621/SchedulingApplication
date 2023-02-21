@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.login_controller">
+   <Button fx:id="login_btn" layoutX="322.0" layoutY="241.0" mnemonicParsing="false" onAction="#attempt_login" prefHeight="25.0" prefWidth="74.0" text="Login" />
+   <TextField fx:id="username_input" layoutX="198.0" layoutY="169.0" prefHeight="25.0" prefWidth="197.0" promptText="Enter Username" />
+   <PasswordField fx:id="password_input" layoutX="198.0" layoutY="207.0" prefHeight="25.0" prefWidth="197.0" promptText="Enter Password" />
+   <Label fx:id="login_lbl" alignment="CENTER" contentDisplay="CENTER" layoutX="248.0" layoutY="102.0" text="Welcome" textAlignment="CENTER">
+      <font>
+         <Font size="25.0" />
+      </font>
+   </Label>
+   <Label fx:id="location_lbl" layoutX="410.0" layoutY="14.0" text="Location:" />
+   <Label fx:id="zoneId_lbl" layoutX="470.0" layoutY="14.0" prefHeight="17.0" prefWidth="103.0" />
+</Pane>
