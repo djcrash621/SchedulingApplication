@@ -60,6 +60,7 @@ public class add_apt_controller implements Initializable {
             Scheduling_Application.displayError("Start Time must not be greater than End Time on the same calendar day.");
             return;
         }
+        //Add future date check
 
         Appointments newAppointment = new Appointments(
                 0,

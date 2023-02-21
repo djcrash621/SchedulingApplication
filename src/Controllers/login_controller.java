@@ -44,7 +44,7 @@ public class login_controller implements Initializable {
         if (verify) {
             Scheduling_Application.changePage(actionEvent,"../JavaFXML/welcome_page.fxml", "Welcome Page");
             for (Appointments apt : DBAppointments.allAppointments) {
-                if (LocalDateTime.now().plusMinutes(15).isBefore(apt.getStart())) {
+                if (LocalDateTime.now().plusMinutes(15).isAfter(apt.getStart()) && LocalDateTime.now().isBefore(apt.getStart())) {
                     Alert upComingApt = new Alert(Alert.AlertType.INFORMATION, "Appointment: " + apt.getAppointmentId() + " at " +
                             apt.getStart().format(DateTimeFormatter.ofPattern("HH:mm")) + " on " + apt.getStart().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")),
                             ButtonType.OK);

@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.Timestamp;
 import java.time.*;
+import java.time.chrono.ChronoLocalDate;
 
 public class Appointments {
     private int appointmentId;
@@ -24,25 +25,6 @@ public class Appointments {
     private int customerId;
     private int userId;
     private int contactId;
-    /*public static ObservableList<LocalTime> aptTimes = FXCollections.observableArrayList(
-            LocalTime.of(8, 0),
-            LocalTime.of(9, 0),
-            LocalTime.of(10, 0),
-            LocalTime.of(11, 0),
-            LocalTime.of(12, 0),
-            LocalTime.of(13, 0),
-            LocalTime.of(14, 0),
-            LocalTime.of(15, 0),
-            LocalTime.of(16, 0),
-            LocalTime.of(17, 0),
-            LocalTime.of(18, 0),
-            LocalTime.of(19, 0),
-            LocalTime.of(20, 0),
-            LocalTime.of(21, 0),
-            LocalTime.of(22, 0)
-    );
-
-     */
 
     public static ObservableList<ZonedDateTime> unconvertedTime = FXCollections.observableArrayList(
             ZonedDateTime.of(LocalDateTime.of(2001,1,1, 8, 0), Scheduling_Application.easternZone),
@@ -148,6 +130,10 @@ public class Appointments {
         }
     }
 
+    public static boolean checkFutureDate(LocalDate startDate, LocalTime startTime) {
+        return startDate.isAfter(LocalDate.now()) || (startDate.isEqual(LocalDate.now()) && startTime.isAfter(LocalTime.now()));
+    }
+
     public static boolean checkDate(LocalDate startDate, LocalDate endDate) {
         return startDate.isAfter(endDate);
     }
@@ -159,7 +145,5 @@ public class Appointments {
         return false;
     }
 
-    public static LocalDateTime convertTime(LocalDateTime times, ZoneId origin, ZoneId target) {
-        return times.atZone(origin).withZoneSameInstant(target).toLocalDateTime();
-    }
+
 }
