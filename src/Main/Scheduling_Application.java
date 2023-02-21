@@ -1,10 +1,7 @@
 package Main;
 
 import Controllers.login_controller;
-import DBAccess.DBAppointments;
-import DBAccess.DBContacts;
-import DBAccess.DBCustomers;
-import DBAccess.DBUsers;
+import DBAccess.*;
 import Model.Appointments;
 import Model.Users;
 import Utilities.JDBC;
@@ -43,6 +40,7 @@ public class Scheduling_Application extends Application {
         DBAppointments.getWeeklyAppointments();
         DBAppointments.getMonthlyAppointments();
         DBAppointments.getAllAppointments();
+        DBCountries.getAllCountries();
         DBContacts.getAllContacts();
 
         FXMLLoader fxmlLoader = new FXMLLoader(Scheduling_Application.class.getResource("../JavaFXML/login_page.fxml"));

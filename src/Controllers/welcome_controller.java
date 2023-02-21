@@ -1,10 +1,12 @@
 package Controllers;
 
 import DBAccess.DBAppointments;
+import DBAccess.DBCountries;
 import DBAccess.DBCustomers;
 import DBAccess.DBDivisions;
 import Main.Scheduling_Application;
 import Model.Appointments;
+import Model.Countries;
 import Model.Customers;
 import Model.Divisions;
 import javafx.beans.property.SimpleStringProperty;
@@ -44,12 +46,14 @@ public class welcome_controller implements Initializable {
     public Button resetTableBtn;
     public Button deleteCustomerBtn;
     public TableColumn<Customers, Integer> customerIdCol;
+    public ComboBox<Countries> CountryDropdown;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         boolean isApt = false;
         welcomeLbl.setText("Welcome: " + Scheduling_Application.activeUser.getUserName());
         divisionDropdown.setItems(DBDivisions.getAllDivisions());
+        CountryDropdown.setItems(DBCountries.countryList);
         customerTbl.setItems(DBCustomers.allCustomers);
         customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
@@ -100,7 +104,7 @@ public class welcome_controller implements Initializable {
         Scheduling_Application.changePage(actionEvent, "../JavaFXML/appointments_page.fxml", "Edit Customer Page");
     }
 
-    public void filterTable(ActionEvent actionEvent) {
+    public void filterByDivisions(ActionEvent actionEvent) {
         ObservableList<Customers> filterCustomers = FXCollections.observableArrayList();
 
         for (Customers c: DBCustomers.allCustomers) {
@@ -115,6 +119,8 @@ public class welcome_controller implements Initializable {
         customerTbl.setItems(DBCustomers.allCustomers);
         customerSearch.setText("");
         divisionDropdown.getSelectionModel().clearSelection();
+        CountryDropdown.getSelectionModel().clearSelection();
+        divisionDropdown.setItems(DBDivisions.allDivisions);
     }
 
     public void deleteCustomer(ActionEvent actionEvent) {
@@ -122,4 +128,27 @@ public class welcome_controller implements Initializable {
         customerTbl.setItems(DBCustomers.allCustomers);
     }
 
+    public void filterByCountry(ActionEvent actionEvent) {
+        divisionDropdown.getSelectionModel().clearSelection();
+
+        ObservableList<Divisions> divisionsInCountry = FXCollections.observableArrayList();
+        ObservableList<Customers> customersInCountry  = FXCollections.observableArrayList();
+        for (Divisions d: DBDivisions.allDivisions) {
+            if (d.getCountryId() == CountryDropdown.getValue().getCountryId()) {
+                divisionsInCountry.add(d);
+            }
+        }
+
+        divisionDropdown.setItems(divisionsInCountry);
+
+        for (Customers c: DBCustomers.allCustomers) {
+            for (Divisions d : divisionsInCountry) {
+                if (c.getDivisionId() == d.getDivisionId()) {
+                    customersInCountry.add(c);
+                }
+            }
+        }
+        customerTbl.setItems(customersInCountry);
+
+    }
 }
