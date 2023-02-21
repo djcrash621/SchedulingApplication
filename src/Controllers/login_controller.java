@@ -1,16 +1,17 @@
 package Controllers;
 
+import DBAccess.DBAppointments;
 import DBAccess.DBUsers;
 import Main.Scheduling_Application;
+import Model.Appointments;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class login_controller implements Initializable {
@@ -38,11 +39,26 @@ public class login_controller implements Initializable {
     public void attempt_login(ActionEvent actionEvent) throws IOException {
 
         boolean verify = DBUsers.loginCheck(username_input.getText(), password_input.getText(), rb);
+        boolean isApt = false;
 
         if (verify) {
             Scheduling_Application.changePage(actionEvent,"../JavaFXML/welcome_page.fxml", "Welcome Page");
+            for (Appointments apt : DBAppointments.allAppointments) {
+                if (LocalDateTime.now().plusMinutes(15).isBefore(apt.getStart())) {
+                    Alert upComingApt = new Alert(Alert.AlertType.INFORMATION, "Appointment: " + apt.getAppointmentId() + " at " +
+                            apt.getStart().format(DateTimeFormatter.ofPattern("HH:mm")) + " on " + apt.getStart().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")),
+                            ButtonType.OK);
+                    upComingApt.setTitle("Upcoming Appointment");
+                    upComingApt.showAndWait();
+                    isApt = true;
+                }
+            }
+            if (!isApt) {
+                Alert noUpcomingApt = new Alert(Alert.AlertType.INFORMATION, "No upcoming appointments.", ButtonType.OK);
+                noUpcomingApt.setTitle("Upcoming Appointment");
+                noUpcomingApt.showAndWait();
+            }
         }
-
     }
 
     public static void getResourceBundle (ResourceBundle resourceBundle) {

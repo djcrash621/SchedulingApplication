@@ -78,6 +78,28 @@ public class appointments_page_controller implements Initializable {
         allAptEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
         allAptCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         allAptUserId.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        weeklyAptTbl.setItems(DBAppointments.weeklyAppointments);
+        weeklyAptId.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
+        weeklyTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        weeklyDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        weeklyLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
+        weeklyContactId.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+        weeklyType.setCellValueFactory(new PropertyValueFactory<>("type"));
+        weeklyStart.setCellValueFactory(new PropertyValueFactory<>("start"));
+        weeklyEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
+        weeklyCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        weeklyUserId.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        monthlyAptTbl.setItems(DBAppointments.monthlyAppointments);
+        monthlyAptId.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
+        monthlyTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        monthlyDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        monthlyLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
+        monthlyContactId.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+        monthlyType.setCellValueFactory(new PropertyValueFactory<>("type"));
+        monthlyStart.setCellValueFactory(new PropertyValueFactory<>("start"));
+        monthlyEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
+        monthlyCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        monthlyUserId.setCellValueFactory(new PropertyValueFactory<>("userId"));
     }
 
     public void addAppointment(ActionEvent actionEvent) throws IOException {

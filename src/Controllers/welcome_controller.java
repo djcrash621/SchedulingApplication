@@ -61,21 +61,6 @@ public class welcome_controller implements Initializable {
                     Customers format = cellData.getValue();
                     return new SimpleStringProperty(Objects.requireNonNull(DBDivisions.getDivision(format.getDivisionId())).getDivision());
                 });
-
-        for (Appointments apt : DBAppointments.allAppointments) {
-            if (LocalDateTime.now().plusMinutes(15).isBefore(apt.getStart())) {
-                Alert upComingApt = new Alert(Alert.AlertType.INFORMATION, "Appointment: " + apt.getAppointmentId() + " at " + apt.getStart().toString(), ButtonType.OK);
-                upComingApt.setTitle("Upcoming Appointment");
-                upComingApt.showAndWait();
-                isApt = true;
-                break;
-            }
-        }
-        if (!isApt) {
-            Alert noUpcomingApt = new Alert(Alert.AlertType.INFORMATION, "No upcoming appointments.", ButtonType.OK);
-            noUpcomingApt.setTitle("Upcoming Appointment");
-            noUpcomingApt.showAndWait();
-        }
     }
 
     public void sign_out(ActionEvent actionEvent) throws IOException {
