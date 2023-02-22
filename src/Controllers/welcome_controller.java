@@ -101,7 +101,7 @@ public class welcome_controller implements Initializable {
     }
 
     public void viewAppointments(ActionEvent actionEvent) throws IOException {
-        Scheduling_Application.changePage(actionEvent, "../JavaFXML/appointments_page.fxml", "Edit Customer Page");
+        Scheduling_Application.changePage(actionEvent, "../JavaFXML/appointments_page.fxml", "Appointments Page");
     }
 
     public void filterByDivisions(ActionEvent actionEvent) {
@@ -124,8 +124,10 @@ public class welcome_controller implements Initializable {
     }
 
     public void deleteCustomer(ActionEvent actionEvent) {
-        DBCustomers.deleteCustomer(customerTbl.getSelectionModel().getSelectedItem());
-        customerTbl.setItems(DBCustomers.allCustomers);
+        Customers SA = customerTbl.getSelectionModel().getSelectedItem();
+        DBCustomers.deleteCustomer(SA);
+        Alert deleted = new Alert(Alert.AlertType.INFORMATION, SA.getCustomerName() + " deleted from records.", ButtonType.OK);
+        deleted.showAndWait();
     }
 
     public void filterByCountry(ActionEvent actionEvent) {

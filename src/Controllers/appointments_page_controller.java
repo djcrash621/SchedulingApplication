@@ -8,10 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -135,6 +132,8 @@ public class appointments_page_controller implements Initializable {
         }
         assert SA != null;
         DBAppointments.deleteApt(SA);
+        Alert deleted = new Alert(Alert.AlertType.INFORMATION, "Appointment: " + SA.getAppointmentId() + " of Type " + SA.getType() + " cancelled.", ButtonType.OK);
+        deleted.showAndWait();
     }
 
     public void editAppointment(ActionEvent actionEvent) throws IOException {

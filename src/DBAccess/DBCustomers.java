@@ -87,6 +87,7 @@ public class DBCustomers {
             sql = "DELETE FROM CUSTOMERS WHERE CUSTOMER_ID = " + customer.getCustomerId();
             ps = JDBC.getConnection().prepareStatement(sql);
             ps.executeUpdate();
+            allCustomers.remove(customer);
         } catch (SQLException e) {
             e.printStackTrace();
         }
