@@ -1,10 +1,14 @@
 package Controllers;
 
+import DBAccess.DBCountries;
 import DBAccess.DBCustomers;
 import DBAccess.DBDivisions;
 import Main.Scheduling_Application;
+import Model.Countries;
 import Model.Customers;
 import Model.Divisions;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,10 +31,12 @@ public class add_customer_controller implements Initializable {
     public Button saveNewCustomer;
     public Button cancelBtn;
     public ComboBox<Divisions> divisionComboBox;
+    public ComboBox<Countries> countryComboBox;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         divisionComboBox.setItems(DBDivisions.getAllDivisions());
+        countryComboBox.setItems(DBCountries.countryList);
     }
 
     public void saveCustomer(ActionEvent actionEvent) throws IOException {
@@ -49,4 +55,13 @@ public class add_customer_controller implements Initializable {
         Scheduling_Application.changePage(actionEvent,"../JavaFXML/welcome_page.fxml", "Edit Customer Form");
     }
 
+    public void filterByCountry(ActionEvent actionEvent) {
+        ObservableList<Divisions> divisionsInCountry = FXCollections.observableArrayList();
+        for (Divisions d: DBDivisions.allDivisions) {
+            if (d.getCountryId() == countryComboBox.getValue().getCountryId()) {
+                divisionsInCountry.add(d);
+            }
+        }
+        divisionComboBox.setItems(divisionsInCountry);
+    }
 }

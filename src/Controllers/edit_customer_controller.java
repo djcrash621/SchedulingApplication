@@ -1,10 +1,14 @@
 package Controllers;
 
+import DBAccess.DBCountries;
 import DBAccess.DBCustomers;
 import DBAccess.DBDivisions;
 import Main.Scheduling_Application;
+import Model.Countries;
 import Model.Customers;
 import Model.Divisions;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -28,6 +32,7 @@ public class edit_customer_controller implements Initializable {
     public Button saveNewCustomer;
     public Button cancelBtn;
     public ComboBox<Divisions> divisionComboBox;
+    public ComboBox<Countries> countryComboBox;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -37,6 +42,8 @@ public class edit_customer_controller implements Initializable {
         phoneNumField.setText(passedInCustomer.getPhoneNum());
         divisionComboBox.setItems(DBDivisions.getAllDivisions());
         divisionComboBox.setValue(DBDivisions.getDivision(passedInCustomer.getDivisionId()));
+        countryComboBox.setItems(DBCountries.countryList);
+        countryComboBox.setValue(DBCountries.getCountry(DBDivisions.getDivision(passedInCustomer.getDivisionId())));
     }
 
     public void saveCustomer(ActionEvent actionEvent) throws IOException {
@@ -50,6 +57,16 @@ public class edit_customer_controller implements Initializable {
 
     public static void customerToModify(Customers customer) {
         passedInCustomer = customer;
+    }
+
+    public void filterByCountry(ActionEvent actionEvent) {
+        ObservableList<Divisions> divisionsInCountry = FXCollections.observableArrayList();
+        for (Divisions d: DBDivisions.allDivisions) {
+            if (d.getCountryId() == countryComboBox.getValue().getCountryId()) {
+                divisionsInCountry.add(d);
+            }
+        }
+        divisionComboBox.setItems(divisionsInCountry);
     }
 
 }

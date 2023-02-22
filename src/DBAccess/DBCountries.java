@@ -1,5 +1,6 @@
 package DBAccess;
 
+import Model.Divisions;
 import Utilities.JDBC;
 import Model.Countries;
 import javafx.collections.FXCollections;
@@ -11,7 +12,7 @@ public class DBCountries {
 
     public static ObservableList<Countries> countryList = FXCollections.observableArrayList();
 
-    public static ObservableList<Countries> getAllCountries() {
+    public static void getAllCountries() {
 
         try {
             String sql = "SELECT * FROM COUNTRIES";
@@ -26,7 +27,15 @@ public class DBCountries {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return countryList;
+    }
+
+    public static Countries getCountry(Divisions searchDiv) {
+        for (Countries c : countryList) {
+            if (c.getCountryId() == searchDiv.getCountryId()) {
+                return c;
+            }
+        }
+        return null;
     }
 
 }
