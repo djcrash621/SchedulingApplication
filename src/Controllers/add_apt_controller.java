@@ -7,32 +7,22 @@ import Main.Scheduling_Application;
 import Model.Appointments;
 import Model.Contacts;
 import Model.Customers;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZonedDateTime;
 import java.util.ResourceBundle;
 
 public class add_apt_controller implements Initializable {
     public TextField titleField;
     public TextField locationField;
     public TextField typeField;
-    public DatePicker startDateChoice;
-    public DatePicker endDateChoice;
+    public DatePicker DateChoice;
     public TextArea descriptionField;
     public Button saveAptBtn;
     public Button cancelBtn;
@@ -52,15 +42,21 @@ public class add_apt_controller implements Initializable {
     }
 
     public void saveAppointment(ActionEvent actionEvent) throws IOException, SQLException {
-        if (Appointments.checkDate(startDateChoice.getValue(), endDateChoice.getValue())) {
-            Scheduling_Application.displayError("Start Date must not be be greater than End Date.");
+        if (Appointments.errorCheckDates(DateChoice.getValue(), startTimePicker.getValue(), endTimePicker.getValue())) {
             return;
         }
-        else if (Appointments.checkTime(startDateChoice.getValue(), endDateChoice.getValue(), startTimePicker.getValue(), endTimePicker.getValue())) {
-            Scheduling_Application.displayError("Start Time must not be greater than End Time on the same calendar day.");
-            return;
+        for (Appointments a : DBAppointments.allAppointments) {
+            if (a.getCustomerId() == customerDropdown.getValue().getCustomerId()) {
+                if (DateChoice.getValue().equals(a.getStart().toLocalDate())){
+                    if (startTimePicker.getValue().isAfter(a.getStart().toLocalTime()) && endTimePicker.getValue().isBefore(a.getEnd().toLocalTime()) ||
+                    endTimePicker.getValue().isAfter(a.getStart().toLocalTime()) && endTimePicker.getValue().isBefore(a.getEnd().toLocalTime()) ||
+                    startTimePicker.getValue().isAfter(a.getStart().toLocalTime()) && startTimePicker.getValue().isBefore(a.getEnd().toLocalTime())) {
+                        Scheduling_Application.displayError("Customer already has existing appointment during " + startTimePicker.getValue().toString() + " and " + endTimePicker.getValue().toString() + " time window.");
+                        return;
+                    }
+                }
+            }
         }
-        //Add future date check
 
         Appointments newAppointment = new Appointments(
                 0,
@@ -68,8 +64,8 @@ public class add_apt_controller implements Initializable {
                 descriptionField.getText(),
                 locationField.getText(),
                 typeField.getText(),
-                LocalDateTime.of(startDateChoice.getValue(), startTimePicker.getValue()),
-                LocalDateTime.of(endDateChoice.getValue(), endTimePicker.getValue()),
+                LocalDateTime.of(DateChoice.getValue(), startTimePicker.getValue()),
+                LocalDateTime.of(DateChoice.getValue(), endTimePicker.getValue()),
                 customerDropdown.getValue().getCustomerId(),
                 Scheduling_Application.activeUser.getUserId(),
                 contactDropDown.getValue().getContactId()

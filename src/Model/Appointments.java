@@ -145,5 +145,22 @@ public class Appointments {
         return false;
     }
 
+    public static boolean errorCheckDates(LocalDate startDate, LocalTime startTime, LocalTime endTime) {
+        if (LocalDateTime.of(startDate, startTime).isBefore(LocalDateTime.now())) {
+            Scheduling_Application.displayError("Must choose a future appointment time.");
+        }
+        if (startDate.getDayOfWeek() == DayOfWeek.SATURDAY || startDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            Scheduling_Application.displayError("Can not schedule appointments outside of business hours (8 am- 10 pm EST M-F");
+            return true;
+        }
+        else if (startTime.isAfter(endTime)) {
+            Scheduling_Application.displayError("Start Time must not be greater than End Time");
+            return true;
+        }
+
+        return false;
+
+    }
+
 
 }
