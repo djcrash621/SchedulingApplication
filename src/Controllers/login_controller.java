@@ -8,7 +8,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,7 +26,26 @@ public class login_controller implements Initializable {
     public Label zoneId_lbl;
     public Label location_lbl;
     public static ResourceBundle rb;
+    public static String fileName = "login_activity.txt";
+    public static FileWriter fWriter;
 
+    static {
+        try {
+            fWriter = new FileWriter(fileName, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static PrintWriter output;
+
+    static {
+        try {
+            output = new PrintWriter(fileName);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourcebundle) {
@@ -33,7 +55,7 @@ public class login_controller implements Initializable {
         login_btn.setText(rb.getString("Login"));
         location_lbl.setText(rb.getString("Location") + ":");
         zoneId_lbl.setText(Scheduling_Application.localZone.toString());
-
+        output.println(LocalDateTime.now() + ": APPLICATION OPENED");
     }
     
     public void attempt_login(ActionEvent actionEvent) throws IOException {
@@ -42,6 +64,8 @@ public class login_controller implements Initializable {
         boolean isApt = false;
 
         if (verify) {
+            output.println(LocalDateTime.now() + ": LOGIN ATTEMPT SUCCESSFUL.");
+            output.close();
             Scheduling_Application.changePage(actionEvent,"../JavaFXML/welcome_page.fxml", "Welcome Page");
             for (Appointments apt : DBAppointments.allAppointments) {
                 if (LocalDateTime.now().plusMinutes(15).isAfter(apt.getStart()) && LocalDateTime.now().isBefore(apt.getStart())) {
@@ -59,9 +83,16 @@ public class login_controller implements Initializable {
                 noUpcomingApt.showAndWait();
             }
         }
+        output.println(LocalDateTime.now() + ": LOGIN ATTEMPT UNSUCCESSFUL.");
+
     }
 
     public static void getResourceBundle (ResourceBundle resourceBundle) {
         rb = resourceBundle;
     }
+
+    public static void closePrinter() {
+        output.close();
+    }
+
 }

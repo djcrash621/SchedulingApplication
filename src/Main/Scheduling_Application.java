@@ -71,5 +71,6 @@ public class Scheduling_Application extends Application {
         launch(args);
 
         JDBC.closeConnection();
+        login_controller.closePrinter();
     }
 }
