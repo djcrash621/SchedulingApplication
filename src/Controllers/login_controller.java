@@ -92,6 +92,7 @@ public class login_controller implements Initializable {
     }
 
     public static void closePrinter() {
+        output.println(LocalDateTime.now() + ": Application Closed.");
         output.close();
     }
 

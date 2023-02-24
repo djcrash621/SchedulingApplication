@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="pageWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.report_page_controller">
+    <TabPane prefHeight="300.0" tabClosingPolicy="UNAVAILABLE">
+        <Tab fx:id="typeMonthAptsTab" text="Appointments by Type &amp; Month">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" />
+            <TableView fx:id="typeMonthAptsTbl" layoutX="24.0" layoutY="285.0" prefHeight="311.0" prefWidth="850.0">
+                <columns>
+                    <TableColumn fx:id = "AptTypeCol" prefWidth="75.0" text="Type" />
+                    <TableColumn fx:id = "aptMonthCol" prefWidth="75.0" text="Month" />
+                    <TableColumn fx:id = "countCol" text = "Count" />
+                </columns>
+            </TableView>
+        </Tab>
+        <Tab fx:id="contactScheduleTab" text="Schedule by Contact">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" />
+            <TreeTableView fx:id="contactsTree" layoutX="24.0" layoutY="285.0">
+                <columns>
+                    <TreeTableColumn fx:id = "aptIdCol" prefWidth="75.0" text="Apt ID" />
+                    <TreeTableColumn fx:id = "titleCol" prefWidth="75.0" text="Title" />
+                    <TreeTableColumn fx:id = "typeCol" prefWidth="150.0" text="Type" />
+                    <TreeTableColumn fx:id = "descriptionCol" prefWidth="100.0" text="Description" />
+                    <TreeTableColumn fx:id = "startCol" prefWidth="75.0" text="Start Date &amp; Time" />
+                    <TreeTableColumn fx:id = "endCol" prefWidth="75.0" text="End Date &amp; Time" />
+                    <TreeTableColumn fx:id = "customerIdCol" prefWidth="75.0" text="Customer ID" />
+                </columns>
+            </TreeTableView>
+        </Tab>
+        <Tab fx:id="weeklyAptTab" text="Weekly">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" />
+            <TableView fx:id="weeklyAptTbl" layoutX="24.0" layoutY="285.0" prefHeight="200.0">
+                <columns>
+                    <TableColumn fx:id="weeklyAptId" prefWidth="75.0" text="Apt ID" />
+                    <TableColumn fx:id="weeklyTitle" prefWidth="75.0" text="Title" />
+                    <TableColumn fx:id="weeklyDescription" prefWidth="150.0" text="Description" />
+                    <TableColumn fx:id="weeklyLocation" prefWidth="100.0" text="Location" />
+                    <TableColumn fx:id="weeklyContactId" prefWidth="75.0" text="Contact" />
+                    <TableColumn fx:id="weeklyType" prefWidth="75.0" text="Type" />
+                    <TableColumn fx:id="weeklyStart" prefWidth="75.0" text="Start" />
+                    <TableColumn fx:id="weeklyEnd" prefWidth="75.0" text="End" />
+                    <TableColumn fx:id="weeklyCustomerId" prefWidth="75.0" text="Customer ID" />
+                    <TableColumn fx:id="weeklyUserId" prefWidth="75.0" text="User ID" />
+                </columns>
+            </TableView>
+        </Tab>
+    </TabPane>
+    <Button fx:id="backBtn" layoutX="659.0" layoutY="361.0" mnemonicParsing="false" onAction="#returnToWelcome" text="Back" />
+</AnchorPane>

@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
@@ -51,7 +52,7 @@ public class edit_apt_controller implements Initializable {
         passedInAppointment = appointment;
     }
 
-    public void saveAppointment(ActionEvent actionEvent) throws IOException {
+    public void saveAppointment(ActionEvent actionEvent) throws IOException, SQLException {
         if (Appointments.checkDate(startDateChoice.getValue(), endDateChoice.getValue())) {
             Scheduling_Application.displayError("Start Date must not be be greater than End Date.");
             return;
