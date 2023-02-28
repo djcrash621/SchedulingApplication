@@ -61,6 +61,7 @@ public class appointments_page_controller implements Initializable {
     public Tab allAptsTab;
     public Tab monthAptTab;
     public Tab weeklyAptTab;
+    public Button reportingBtn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -165,4 +166,7 @@ public class appointments_page_controller implements Initializable {
     }
 
 
+    public void goToReporting(ActionEvent actionEvent) throws IOException {
+        Scheduling_Application.changePage(actionEvent, "../JavaFXML/report_page.fxml", "Reports");
+    }
 }

@@ -20,6 +20,9 @@ import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Class that initiates the Scheduling Application and defines several application-wide methods.
+ */
 public class Scheduling_Application extends Application {
 
     public static String rbLocation = "Utilities/Nat";
@@ -28,6 +31,12 @@ public class Scheduling_Application extends Application {
     public static ZoneId easternZone = ZoneId.of("US/Eastern");
     public static ZoneId utcZone = ZoneId.of("UTC");
 
+
+    /**
+     * Method that runs at application startup, calling necessary methods for the application and loading the initial login page
+     * @param stage The application stage
+     * @throws Exception Exception for page change
+     */
     @Override
     public void start(Stage stage) throws Exception{
 
@@ -51,11 +60,23 @@ public class Scheduling_Application extends Application {
         stage.show();
     }
 
+
+    /**
+     * Method used to display an error message in the UI
+     * @param errorMessage Error message to be displayed
+     */
     public static void displayError(String errorMessage) {
         Alert alert = new Alert(Alert.AlertType.ERROR, errorMessage, ButtonType.OK);
         alert.showAndWait();
     }
 
+    /**
+     * Method to change page to specified page.
+     * @param actionEvent Action to trigger method
+     * @param pageChange the directory of the page to be changed to
+     * @param title Title to set for the new page
+     * @throws IOException Exception for page change
+     */
     public static void changePage(ActionEvent actionEvent, String pageChange, String title) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Scheduling_Application.class.getResource(pageChange));
         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
@@ -65,6 +86,10 @@ public class Scheduling_Application extends Application {
         stage.show();
     }
 
+    /**
+     * Main method to make database connection, launch application, and close the login controller
+     * @param args Unused parameter
+     */
     public static void main(String[] args) {
         //System.out.println(Locale.getDefault().getLanguage());
         JDBC.makeConnection();

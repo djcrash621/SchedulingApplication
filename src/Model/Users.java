@@ -74,4 +74,9 @@ public class Users {
     public String getLastUpdatedBy() {
         return this.lastUpdatedBy;
     }
+
+    @Override
+    public String toString() {
+        return (this.userName);
+    }
 }

@@ -13,16 +13,17 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * Class defines controls for the edit appointment page of the application.
+ */
 public class edit_apt_controller implements Initializable {
     public TextField titleField;
     public TextField locationField;
     public TextField typeField;
-    public DatePicker startDateChoice;
-    public DatePicker endDateChoice;
+    public DatePicker DateChoice;
     public TextArea descriptionField;
     public Button saveAptBtn;
     public Button cancelBtn;
@@ -32,6 +33,12 @@ public class edit_apt_controller implements Initializable {
     public ChoiceBox<LocalTime > endTimePicker;
     public TextField aptIdField;
 
+
+    /**
+     * Method run on initial page initialization, populating the cells with the data from the given appointment being editted.
+     * @param url Unused Parameter
+     * @param resourceBundle Unused Parameter
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         customerLbl.setText("Customer: " + Objects.requireNonNull(DBCustomers.lookupCustomer(passedInAppointment.getCustomerId())).getCustomerName());
@@ -44,21 +51,27 @@ public class edit_apt_controller implements Initializable {
         endTimePicker.setItems(Appointments.zonedTime);
         startTimePicker.setValue(passedInAppointment.getStart().toLocalTime());
         endTimePicker.setValue(passedInAppointment.getEnd().toLocalTime());
-        startDateChoice.setValue(passedInAppointment.getStart().toLocalDate());
-        endDateChoice.setValue(passedInAppointment.getEnd().toLocalDate());
+        DateChoice.setValue(passedInAppointment.getStart().toLocalDate());
     }
 
+
+    /**
+     * Function used by other controllers handing off the appointment to be edited in this page.
+     * @param appointment Appointment to be edited, handed off from the appointment page
+     */
     public static void handOffAppointment(Appointments appointment) {
         passedInAppointment = appointment;
     }
 
+
+    /**
+     * Saves the edited appointment to the table after first verifying the inputted values. Returns to appointment page on valid completion.
+     * @param actionEvent Action taken to run method.
+     * @throws IOException Exception for page change
+     * @throws SQLException Exception for database commands.
+     */
     public void saveAppointment(ActionEvent actionEvent) throws IOException, SQLException {
-        if (Appointments.checkDate(startDateChoice.getValue(), endDateChoice.getValue())) {
-            Scheduling_Application.displayError("Start Date must not be be greater than End Date.");
-            return;
-        }
-        else if (Appointments.checkTime(startDateChoice.getValue(), endDateChoice.getValue(), startTimePicker.getValue(), endTimePicker.getValue())) {
-            Scheduling_Application.displayError("Start Time must not be greater than End Time on the same calendar day.");
+        if (Appointments.errorCheckDates(DateChoice.getValue(), startTimePicker.getValue(), endTimePicker.getValue())) {
             return;
         }
 
@@ -68,8 +81,8 @@ public class edit_apt_controller implements Initializable {
                 descriptionField.getText(),
                 locationField.getText(),
                 typeField.getText(),
-                LocalDateTime.of(startDateChoice.getValue(), startTimePicker.getValue()),
-                LocalDateTime.of(endDateChoice.getValue(), endTimePicker.getValue()),
+                LocalDateTime.of(DateChoice.getValue(), startTimePicker.getValue()),
+                LocalDateTime.of(DateChoice.getValue(), endTimePicker.getValue()),
                 passedInAppointment.getCustomerId(),
                 passedInAppointment.getUserId(),
                 passedInAppointment.getUserId()
@@ -78,6 +91,11 @@ public class edit_apt_controller implements Initializable {
         Scheduling_Application.changePage(actionEvent, "../JavaFXML/appointments_page.fxml", "Appointments");
     }
 
+    /**
+     * Method to cancel editing of appointment and return to appointment page.
+     * @param actionEvent Action taken to run method
+     * @throws IOException Exception for page change
+     */
     public void cancelAddAppointment(ActionEvent actionEvent) throws IOException {
         Scheduling_Application.changePage(actionEvent, "../JavaFXML/appointments_page.fxml", "Appointments");
     }

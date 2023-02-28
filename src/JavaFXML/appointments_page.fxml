@@ -58,7 +58,8 @@
         </Tab>
     </TabPane>
    <Button fx:id="addAptBtn" layoutX="719.0" layoutY="361.0" mnemonicParsing="false" onAction="#addAppointment" text="Add Appointment" />
-   <Button fx:id="backBtn" layoutX="659.0" layoutY="361.0" mnemonicParsing="false" onAction="#returnToWelcome" text="Back" />
-   <Button fx:id="deleteAptBtn" layoutX="23.0" layoutY="361.0" mnemonicParsing="false" onAction="#deleteAppointment" text="Delete Appointment" />
-   <Button fx:id="editAptBtn" layoutX="165.0" layoutY="361.0" mnemonicParsing="false" onAction="#editAppointment" text="Edit Appointment" />
+   <Button fx:id="backBtn" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#returnToWelcome" text="Back" />
+   <Button fx:id="deleteAptBtn" layoutX="463.0" layoutY="361.0" mnemonicParsing="false" onAction="#deleteAppointment" text="Delete Appointment" />
+   <Button fx:id="editAptBtn" layoutX="598.0" layoutY="361.0" mnemonicParsing="false" onAction="#editAppointment" text="Edit Appointment" />
+   <Button fx:id="reportingBtn" layoutX="66.0" layoutY="361.0" mnemonicParsing="false" onAction="#goToReporting" text="Reporting" />
 </AnchorPane>

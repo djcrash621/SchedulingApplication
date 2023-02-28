@@ -18,6 +18,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
 
+
+/**
+ * This class serves as the controller for the add appointment FXML page of the application.
+ */
 public class add_apt_controller implements Initializable {
     public TextField titleField;
     public TextField locationField;
@@ -33,6 +37,12 @@ public class add_apt_controller implements Initializable {
     public ComboBox<Customers> customerDropdown;
     public ComboBox<Contacts> contactDropDown;
 
+
+    /**
+     * Method runs on initialization of the page, setting the dropdowns and pickers to their respective Observable Lists
+     * @param url Unused parameter
+     * @param resourceBundle Unused parameter
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         customerDropdown.setItems(DBCustomers.allCustomers);
@@ -41,6 +51,13 @@ public class add_apt_controller implements Initializable {
         contactDropDown.setItems(DBContacts.allContacts);
     }
 
+
+    /**
+     * Saves the appointment to the database, after checking all values as necessary, then returns to the appointments page.
+     * @param actionEvent Action to run method
+     * @throws IOException Exception for page change
+     * @throws SQLException Exception for SQL command
+     */
     public void saveAppointment(ActionEvent actionEvent) throws IOException, SQLException {
         if (Appointments.errorCheckDates(DateChoice.getValue(), startTimePicker.getValue(), endTimePicker.getValue())) {
             return;
@@ -74,6 +91,12 @@ public class add_apt_controller implements Initializable {
         Scheduling_Application.changePage(actionEvent, "../JavaFXML/appointments_page.fxml", "Appointments");
     }
 
+
+    /**
+     * Method to cancel new appointment and return to appointment page.
+     * @param actionEvent Action taken to run method
+     * @throws IOException Exception for page change
+     */
     public void cancelAddAppointment(ActionEvent actionEvent) throws IOException {
         Scheduling_Application.changePage(actionEvent, "../JavaFXML/appointments_page.fxml", "Appointments");
     }
