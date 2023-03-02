@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
- * Class defines controls for the edit appointment page of the application.
+ * Class defines controls and defines the methods for the edit appointment page of the application.
  */
 public class edit_apt_controller implements Initializable {
     public TextField titleField;
@@ -57,7 +57,7 @@ public class edit_apt_controller implements Initializable {
 
     /**
      * Function used by other controllers handing off the appointment to be edited in this page.
-     * @param appointment Appointment to be edited, handed off from the appointment page
+     * @param appointment Appointment to be edited, handed off from the appointment page.
      */
     public static void handOffAppointment(Appointments appointment) {
         passedInAppointment = appointment;
@@ -67,7 +67,7 @@ public class edit_apt_controller implements Initializable {
     /**
      * Saves the edited appointment to the table after first verifying the inputted values. Returns to appointment page on valid completion.
      * @param actionEvent Action taken to run method.
-     * @throws IOException Exception for page change
+     * @throws IOException Exception for page change.
      * @throws SQLException Exception for database commands.
      */
     public void saveAppointment(ActionEvent actionEvent) throws IOException, SQLException {
@@ -93,8 +93,8 @@ public class edit_apt_controller implements Initializable {
 
     /**
      * Method to cancel editing of appointment and return to appointment page.
-     * @param actionEvent Action taken to run method
-     * @throws IOException Exception for page change
+     * @param actionEvent Action taken to run method.
+     * @throws IOException Exception for page change.
      */
     public void cancelAddAppointment(ActionEvent actionEvent) throws IOException {
         Scheduling_Application.changePage(actionEvent, "../JavaFXML/appointments_page.fxml", "Appointments");

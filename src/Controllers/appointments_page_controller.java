@@ -18,6 +18,9 @@ import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
+/**
+ * This class controls the main Appointments page in the application, and defines its methods
+ */
 public class appointments_page_controller implements Initializable {
     public TableView<Appointments> monthlyAptTbl;
     public Tab weeklyAptTable;
@@ -63,6 +66,11 @@ public class appointments_page_controller implements Initializable {
     public Tab weeklyAptTab;
     public Button reportingBtn;
 
+    /**
+     * This method initializes the Appointment page, populating the tab tables and their respective columns with the appropriate observable lists and subsequent appointment member values.
+     * @param url Unused parameter.
+     * @param resourceBundle Unused parameter.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         allAptTbl.setItems(DBAppointments.allAppointments);
@@ -100,14 +108,28 @@ public class appointments_page_controller implements Initializable {
         monthlyUserId.setCellValueFactory(new PropertyValueFactory<>("userId"));
     }
 
+    /**
+     * Method that changes scene from the current page to the Add Appointment Page.
+     * @param actionEvent Action Taken to trigger method.
+     * @throws IOException Exception from Page Change.
+     */
     public void addAppointment(ActionEvent actionEvent) throws IOException {
         Scheduling_Application.changePage(actionEvent, "../JavaFXML/add_apt_page.fxml", "New Appointment Page");
     }
 
+    /**
+     * Method that changes scene from current page to the Welcome Page.
+     * @param actionEvent Action taken to trigger method.
+     * @throws IOException Exception from Page Change.
+     */
     public void returnToWelcome(ActionEvent actionEvent) throws IOException {
         Scheduling_Application.changePage(actionEvent,"../JavaFXML/welcome_page.fxml", "Welcome Page");
     }
 
+    /**
+     * This method deletes the selected appointment from any of the three tables, if selected; otherwise the method returns.
+     * @param actionEvent Action taken to trigger method.
+     */
     public void deleteAppointment(ActionEvent actionEvent) {
         Appointments SA = null;
         try {
@@ -137,6 +159,11 @@ public class appointments_page_controller implements Initializable {
         deleted.showAndWait();
     }
 
+    /**
+     * This method will get the selection from any of the three appointment table, then will pass the value to the edit page as it changes the scene to the edit page.
+     * @param actionEvent Action taken to trigger method.
+     * @throws IOException Exception for page change.
+     */
     public void editAppointment(ActionEvent actionEvent) throws IOException {
         Appointments SA = null;
         try {
@@ -166,6 +193,11 @@ public class appointments_page_controller implements Initializable {
     }
 
 
+    /**
+     * This method will change the scene to the Report Page of the application.
+     * @param actionEvent Action taken to trigger method.
+     * @throws IOException Exception for page change.
+     */
     public void goToReporting(ActionEvent actionEvent) throws IOException {
         Scheduling_Application.changePage(actionEvent, "../JavaFXML/report_page.fxml", "Reports");
     }

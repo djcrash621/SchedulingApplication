@@ -20,6 +20,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * This class defines the methods and serves as the controller for the report page.
+ */
 public class report_page_controller implements Initializable {
 
     public Button backBtn;
@@ -59,6 +62,13 @@ public class report_page_controller implements Initializable {
     public TableColumn<Appointments, DateTimeFormatter> userEndCol;
     public TableColumn<Appointments, String> userCustomerNameCol;
 
+    /**
+     * This method initializes the page, setting the dropdowns and tables for all tabs to their intended properties.
+     * Lambda expressions (repeated 3X) takes the Customer_ID value from the cell and converts it to the
+     * matching customer name value.
+     * @param url Unused parameter
+     * @param resourceBundle Unused parameter
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -99,14 +109,22 @@ public class report_page_controller implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
     }
 
+    /**
+     * Method to change the scene from the current page to the welcome/customer page.
+     * @param actionEvent Action taken to trigger method.
+     * @throws IOException Exception thrown from page change.
+     */
     public void returnToWelcome(ActionEvent actionEvent) throws IOException {
         Scheduling_Application.changePage(actionEvent, "../JavaFXML/appointments_page.fxml", "Appointments");
     }
 
+    /**
+     * This method filters the table in the type and month report tab to the appointment values matching the values selected in the
+     * type and month dropdowns. Adjusts count to the number of appointments in the filter.
+     * @param actionEvent Action taken to trigger method.
+     */
     public void typeMonthFilter(ActionEvent actionEvent) {
         if (aptMonthDropdown.getSelectionModel().isEmpty() || aptTypeDropdown.getSelectionModel().isEmpty()) {
             return;
@@ -117,6 +135,12 @@ public class report_page_controller implements Initializable {
 
     }
 
+    /**
+     * This method filters the table in the contact schedule page to the appointments with the contact selected in the
+     * contact dropdown. Adjusts count label to the number of appointments in the filtered set.
+     * Sorts in order of the start time.
+     * @param actionEvent Action taken to trigger method.
+     */
     public void contactFilter(ActionEvent actionEvent) {
         ObservableList<Appointments> contactsAppointments = DBReporting.getContactApts(contactDropdown.getSelectionModel().getSelectedItem());
         contactTbl.setItems(contactsAppointments);
@@ -124,6 +148,12 @@ public class report_page_controller implements Initializable {
         aptCountLbl.setText("Count: " + contactsAppointments.size());
     }
 
+    /**
+     * This method filters the table in the user schedule page to the appointments with the user selected in the
+     * contact dropdown. Adjusts count label to the number of appointments in the filtered set.
+     * Sorts in order of the start time.
+     * @param actionEvent Action taken to trigger the method.
+     */
     public void userFilter(ActionEvent actionEvent) {
         ObservableList<Appointments> userAppointments = DBReporting.getUserApts(userDropdown.getSelectionModel().getSelectedItem());
         userTbl.setItems(userAppointments);

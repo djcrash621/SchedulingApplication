@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This class defines the methods and serves as the controller for the edit customer page of the application.
+ */
 public class edit_customer_controller implements Initializable {
     private static Customers passedInCustomer;
     public TextField customerNameField;
@@ -34,31 +37,56 @@ public class edit_customer_controller implements Initializable {
     public ComboBox<Divisions> divisionComboBox;
     public ComboBox<Countries> countryComboBox;
 
+    /**
+     * This method initializes the page, populating the combo box with the country and division observable lists,
+     * and populates the text fields with the values from the passed in customer.
+     * @param url Unused parameter.
+     * @param resourceBundle Unused parameter.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         customerNameField.setText(passedInCustomer.getCustomerName());
         addressField.setText(passedInCustomer.getAddress());
         postalCodeField.setText(passedInCustomer.getPostalCode());
         phoneNumField.setText(passedInCustomer.getPhoneNum());
-        divisionComboBox.setItems(DBDivisions.getAllDivisions());
+        divisionComboBox.setItems(DBDivisions.allDivisions);
         divisionComboBox.setValue(DBDivisions.getDivision(passedInCustomer.getDivisionId()));
         countryComboBox.setItems(DBCountries.countryList);
         countryComboBox.setValue(DBCountries.getCountry(DBDivisions.getDivision(passedInCustomer.getDivisionId())));
     }
 
+    /**
+     * Method that saves the updated customer to the database and local observable list.
+     * @param actionEvent Action taken to trigger method.
+     * @throws IOException Exception thrown from page change.
+     */
     public void saveCustomer(ActionEvent actionEvent) throws IOException {
         DBCustomers.updateCustomer(new Customers(passedInCustomer.getCustomerId(), customerNameField.getText(), addressField.getText(), postalCodeField.getText(), phoneNumField.getText(), divisionComboBox.getSelectionModel().getSelectedItem().getDivisionId()));
         Scheduling_Application.changePage(actionEvent,"../JavaFXML/welcome_page.fxml", "Welcome Page");
     }
 
+    /**
+     * Method that changes the scene from the current scene to the welcome page.
+     * @param actionEvent Action taken to trigger method.
+     * @throws IOException Exception thrown from page change.
+     */
     public void returnToWelcome(ActionEvent actionEvent) throws IOException {
         Scheduling_Application.changePage(actionEvent,"../JavaFXML/welcome_page.fxml", "Welcome Page");
     }
 
+    /**
+     * Method used by other pages to pass customers into this page to be edited.
+     * @param customer Customer passed in from the customer page.
+     */
     public static void customerToModify(Customers customer) {
         passedInCustomer = customer;
     }
 
+    /**
+     * This method runs when a value in the country dropdown is selected, and filters the values in the division dropdown to the values
+     * matching within the country values.
+     * @param actionEvent Action taken to trigger method.
+     */
     public void filterByCountry(ActionEvent actionEvent) {
         ObservableList<Divisions> divisionsInCountry = FXCollections.observableArrayList();
         for (Divisions d: DBDivisions.allDivisions) {

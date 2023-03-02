@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 
 
 /**
- * This class serves as the controller for the add appointment FXML page of the application.
+ * This class serves as the controller and defines the methods for the add appointment FXML page of the application.
  */
 public class add_apt_controller implements Initializable {
     public TextField titleField;
@@ -39,9 +39,9 @@ public class add_apt_controller implements Initializable {
 
 
     /**
-     * Method runs on initialization of the page, setting the dropdowns and pickers to their respective Observable Lists
-     * @param url Unused parameter
-     * @param resourceBundle Unused parameter
+     * Method runs on initialization of the page, setting the dropdowns and pickers to their respective Observable Lists.
+     * @param url Unused parameter.
+     * @param resourceBundle Unused parameter.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -54,9 +54,9 @@ public class add_apt_controller implements Initializable {
 
     /**
      * Saves the appointment to the database, after checking all values as necessary, then returns to the appointments page.
-     * @param actionEvent Action to run method
-     * @throws IOException Exception for page change
-     * @throws SQLException Exception for SQL command
+     * @param actionEvent Action to run method.
+     * @throws IOException Exception for page change.
+     * @throws SQLException Exception for SQL command.
      */
     public void saveAppointment(ActionEvent actionEvent) throws IOException, SQLException {
         if (Appointments.errorCheckDates(DateChoice.getValue(), startTimePicker.getValue(), endTimePicker.getValue())) {
@@ -94,8 +94,8 @@ public class add_apt_controller implements Initializable {
 
     /**
      * Method to cancel new appointment and return to appointment page.
-     * @param actionEvent Action taken to run method
-     * @throws IOException Exception for page change
+     * @param actionEvent Action taken to run method.
+     * @throws IOException Exception for page change.
      */
     public void cancelAddAppointment(ActionEvent actionEvent) throws IOException {
         Scheduling_Application.changePage(actionEvent, "../JavaFXML/appointments_page.fxml", "Appointments");

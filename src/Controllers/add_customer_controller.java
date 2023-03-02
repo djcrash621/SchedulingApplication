@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This class is the controller for the add_customer FXML Page of the Application, also providing definitions for member methods.
+ */
 public class add_customer_controller implements Initializable {
     public TextField customerNameField;
     public TextField addressField;
@@ -33,12 +36,22 @@ public class add_customer_controller implements Initializable {
     public ComboBox<Divisions> divisionComboBox;
     public ComboBox<Countries> countryComboBox;
 
+    /**
+     * This method initializes the page and populates the two combo boxes with their corresponding Observable Lists.
+     * @param url Unused Parameter.
+     * @param resourceBundle Unused Parameter.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        divisionComboBox.setItems(DBDivisions.getAllDivisions());
+        divisionComboBox.setItems(DBDivisions.allDivisions);
         countryComboBox.setItems(DBCountries.countryList);
     }
 
+    /**
+     * This method save's the added customer to the database, after first checking for input errors.
+     * @param actionEvent Action Taken to trigger method.
+     * @throws IOException Exception for page change.
+     */
     public void saveCustomer(ActionEvent actionEvent) throws IOException {
         if (customerNameField.getText().isBlank()) { Scheduling_Application.displayError("Customer Name must not be blank."); }
         else if (addressField.getText().isBlank()) { Scheduling_Application.displayError("Address must not be be blank."); }
@@ -49,12 +62,19 @@ public class add_customer_controller implements Initializable {
         Scheduling_Application.changePage(actionEvent, "../JavaFXML/welcome_page.fxml", "Edit Customer Form");
     }
 
-    //DONE
-    //For cancel button
+    /**
+     * This method changes the scene to the Application Welcome/Customer Page.
+     * @param actionEvent Action Taken to trigger method.
+     * @throws IOException Exception for page change.
+     */
     public void returnToWelcome(ActionEvent actionEvent) throws IOException {
         Scheduling_Application.changePage(actionEvent,"../JavaFXML/welcome_page.fxml", "Edit Customer Form");
     }
 
+    /**
+     * This method filters the Division ComboBox options by the Country Selected with the Country Dropdown.
+     * @param actionEvent Action Taken to trigger method.
+     */
     public void filterByCountry(ActionEvent actionEvent) {
         ObservableList<Divisions> divisionsInCountry = FXCollections.observableArrayList();
         for (Divisions d: DBDivisions.allDivisions) {

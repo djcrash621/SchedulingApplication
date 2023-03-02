@@ -8,6 +8,9 @@ import java.sql.Timestamp;
 import java.time.*;
 import java.time.chrono.ChronoLocalDate;
 
+/**
+ * This class defines the appointments class and its methods.
+ */
 public class Appointments {
     private int appointmentId;
     private String title;
@@ -46,6 +49,19 @@ public class Appointments {
 
     public static ObservableList<LocalTime> zonedTime = FXCollections.observableArrayList();
 
+    /**
+     * Default class constructor
+     * @param newAppointmentId Appointment ID
+     * @param newTitle Title
+     * @param newDescription Description
+     * @param newLocation Location
+     * @param newType Type
+     * @param newStart Start
+     * @param newEnd End
+     * @param newCustomerId Customer ID
+     * @param newUserId User ID
+     * @param newContactId Contact ID
+     */
     public Appointments(int newAppointmentId, String newTitle, String newDescription, String newLocation, String newType, LocalDateTime newStart, LocalDateTime newEnd, /*LocalDateTime newCreateDate, String newCreatedBy, Timestamp newLastUpdate, String newLastUpdatedBy,*/ int newCustomerId, int newUserId, int newContactId) {
         this.appointmentId = newAppointmentId;
         this.title = newTitle;
@@ -65,32 +81,88 @@ public class Appointments {
         this.contactId = newContactId;
     }
 
+    /**
+     * Returns the current objects appointmentId.
+     * @return AppointmentID Integer
+     */
     public int getAppointmentId() { return this.appointmentId; }
 
+    /**
+     * Sets a new appointment ID for the current object.
+     * @param newAppointmentId new Appointment ID Integer.
+     */
     public void setAppointmentId(int newAppointmentId) { this.appointmentId = newAppointmentId; }
 
+    /**
+     * Returns the current object's title.
+     * @return Title String
+     */
     public String getTitle() { return this.title; }
 
+    /**
+     * Sets a new title for the current object.
+     * @param newTitle new Title String
+     */
     public void setTitle(String newTitle) { this.title = newTitle; }
 
+    /**
+     * Returns the current object's description
+     * @return Description String
+     */
     public String getDescription() { return this.description; }
 
+    /**
+     * Sets a new description for the current object.
+     * @param newDescription new Description String.
+     */
     public void setDescription(String newDescription) { this.description = newDescription; }
 
+    /**
+     * Returns the location for the current object.
+     * @return Location String.
+     */
     public String getLocation() { return this.location; }
 
+    /**
+     * Sets a new location for the current object.
+     * @param newLocation new Location String.
+     */
     public void setLocation(String newLocation) { this.location = newLocation; }
 
+    /**
+     * Returns the current objects type.
+     * @return Type String.
+     */
     public String getType() { return this.type; }
 
+    /**
+     * Sets a new type for the current object.
+     * @param newType new Tpye String.
+     */
     public void setType(String newType) { this.type = newType; }
 
+    /**
+     * Returns the start value of the current object.
+     * @return Start LocalDateTime
+     */
     public LocalDateTime getStart() { return this.start; }
 
+    /**
+     * Sets a new start value for the current object.
+     * @param newStart new LocalDateTime start
+     */
     public void setStart(LocalDateTime newStart) { this.start = newStart; }
 
+    /**
+     * Returns the end value of the current object.
+     * @return End LocalDateTime
+     */
     public LocalDateTime getEnd() { return this.end; }
 
+    /**
+     * Sets a ned end value for the current object.
+     * @param newEnd new LocalDateTime end.
+     */
     public void setEnd(LocalDateTime newEnd) { this.end = newEnd; }
 
     /*
@@ -111,18 +183,46 @@ public class Appointments {
     public void setLastUpdatedBy(String newLastUpdatedBy) { this.lastUpdatedBy = newLastUpdatedBy; }
      */
 
+    /**
+     * Returns the customer id for the current object.
+     * @return Customer ID integer.
+     */
     public int getCustomerId() { return this.customerId; }
 
+    /**
+     * Sets a new customer id for the current object.
+     * @param newCustomerId new Customer ID integer.
+     */
     public void setCustomerId(int newCustomerId) { this.customerId = newCustomerId; }
 
+    /**
+     * Returns the user ID for the current object.
+     * @return User ID integer
+     */
     public int getUserId() { return this.userId; }
 
+    /**
+     * Sets a new user ID for the given object
+     * @param newUserId new User ID integer
+     */
     public void setUserId(int newUserId) { this.userId = newUserId; }
 
+    /**
+     * Returns the contact ID for the current object
+     * @return Contact ID integer
+     */
     public int getContactId() { return this.contactId; }
 
+    /**
+     * Sets a new contact ID for the current object
+     * @param newContactId new Contact ID integer
+     */
     public void setContactId(int newContactId) { this.contactId = newContactId; }
 
+    /**
+     * Converts the given time zone in eastern time to the local time zone.
+     * @param easternTime List of eastern time zone values used for appointment setting.
+     */
     public static void convertedToZoneTime(ObservableList<ZonedDateTime> easternTime) {
         zonedTime = FXCollections.observableArrayList();
         for (ZonedDateTime n : easternTime) {
@@ -130,24 +230,17 @@ public class Appointments {
         }
     }
 
-    public static boolean checkFutureDate(LocalDate startDate, LocalTime startTime) {
-        return startDate.isAfter(LocalDate.now()) || (startDate.isEqual(LocalDate.now()) && startTime.isAfter(LocalTime.now()));
-    }
-
-    public static boolean checkDate(LocalDate startDate, LocalDate endDate) {
-        return startDate.isAfter(endDate);
-    }
-
-    public static boolean checkTime(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
-        if (startTime.isAfter(endTime)) {
-            return startDate.isAfter(endDate) || startDate.isEqual(endDate);
-        }
-        return false;
-    }
-
+    /**
+     * Error checks the given date and time values to prevent illogical or overlapped time values.
+     * @param startDate inputted appointment date.
+     * @param startTime inputted appointment start time.
+     * @param endTime inputter appointment end time.
+     * @return true if an error is found, false if not.
+     */
     public static boolean errorCheckDates(LocalDate startDate, LocalTime startTime, LocalTime endTime) {
         if (LocalDateTime.of(startDate, startTime).isBefore(LocalDateTime.now())) {
             Scheduling_Application.displayError("Must choose a future appointment time.");
+            return true;
         }
         if (startDate.getDayOfWeek() == DayOfWeek.SATURDAY || startDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
             Scheduling_Application.displayError("Can not schedule appointments outside of business hours (8 am- 10 pm EST M-F");
@@ -157,9 +250,7 @@ public class Appointments {
             Scheduling_Application.displayError("Start Time must not be greater than End Time");
             return true;
         }
-
         return false;
-
     }
 
 

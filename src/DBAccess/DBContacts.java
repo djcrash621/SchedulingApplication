@@ -9,9 +9,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * This class defines the methods that pull data from the SQL database for the contacts class.
+ */
 public class DBContacts {
     public static ObservableList<Contacts> allContacts = FXCollections.observableArrayList();
 
+    /**
+     * This method queries the database for all columns from the contact table and adds the values
+     * into this classes allContacts ObservableList that is used throughout the rest of the application.
+     */
     public static void getAllContacts() {
         try {
             String sql = "SELECT * FROM CONTACTS";
@@ -29,6 +36,12 @@ public class DBContacts {
         }
     }
 
+    /**
+     * This method queries the database for the contact value that contains the given
+     * contact ID.
+     * @param searchContactId The ID of the contact being searched for.
+     * @return Returns the Contact with the given contactId.
+     */
     public Contacts findContact(int searchContactId) {
         Contacts result = null;
         try {

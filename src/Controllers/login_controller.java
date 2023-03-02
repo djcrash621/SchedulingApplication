@@ -17,6 +17,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
+/**
+ * This class defines the methods and serves as the controller for the login page.
+ */
 public class login_controller implements Initializable {
 
     public Button login_btn;
@@ -47,6 +50,13 @@ public class login_controller implements Initializable {
         }
     }
 
+    /**
+     * This method initializes the page, setting the text to the correct license via the resource bundle.
+     * Prints to the login_activity record that the application has been opened.
+     * Sets the zone id to the system default time zone.
+     * @param url Unused parameter.
+     * @param resourcebundle Unused parameter.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourcebundle) {
         username_input.setPromptText(rb.getString("Enter") + " " + rb.getString("username"));
@@ -57,7 +67,14 @@ public class login_controller implements Initializable {
         zoneId_lbl.setText(Scheduling_Application.localZone.toString());
         output.println(LocalDateTime.now() + ": APPLICATION OPENED");
     }
-    
+
+    /**
+     * This method will check the username and password inputs and verifies if they exist in the database. If so, access is granted, and the page is changed
+     * to the welcome/customer page. Successful login recording in login_activity log. If the information is not found, an error message is thrown, and the
+     * access denied is logged in the login_activity log. Shows message for any upcoming, or no upcoming, appointments.
+     * @param actionEvent Action taken to trigger method.
+     * @throws IOException Exception thrown from page change.
+     */
     public void attempt_login(ActionEvent actionEvent) throws IOException {
 
         boolean verify = DBUsers.loginCheck(username_input.getText(), password_input.getText(), rb);
@@ -87,10 +104,17 @@ public class login_controller implements Initializable {
 
     }
 
+    /**
+     * Methods receives the resource bundle from another page to be used to adjust language in this page.
+     * @param resourceBundle Resource bundle passed in from the function call.
+     */
     public static void getResourceBundle (ResourceBundle resourceBundle) {
         rb = resourceBundle;
     }
 
+    /**
+     * Closes the login_activity printer writer.
+     */
     public static void closePrinter() {
         output.println(LocalDateTime.now() + ": Application Closed.");
         output.close();

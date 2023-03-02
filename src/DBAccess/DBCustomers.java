@@ -8,10 +8,17 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 
+/**
+ * This class defines the method querying the database for data for the Customer class.
+ */
 public class DBCustomers {
 
     public static ObservableList<Customers> allCustomers = FXCollections.observableArrayList();
 
+    /**
+     * This method queries the database for all data in the Customers table and
+     * adds the values into the AllCustomers ObservableList used throughout the application.
+     */
     public static void getAllCustomers() {
 
         allCustomers.clear();
@@ -34,6 +41,11 @@ public class DBCustomers {
         }
     }
 
+    /**
+     * This method updates the database Customer table with the given customer object matching the Customer ID
+     * found in the database.
+     * @param updatedCustomer The updated values of the customer to be pushed to the database.
+     */
     public static void updateCustomer(Customers updatedCustomer) {
         try {
             String sql = "UPDATE CUSTOMERS\n" +
@@ -47,6 +59,10 @@ public class DBCustomers {
         }
     }
 
+    /**
+     * This method updates the database by inserting into the customer table the given customer value.
+     * @param newCustomer The customer object to be inserted into the database.
+     */
     public static void addCustomer(Customers newCustomer) {
         try {
             String sql = "INSERT INTO CUSTOMERS (CUSTOMER_NAME, ADDRESS, POSTAL_CODE, PHONE, DIVISION_ID)\n" +
@@ -59,6 +75,12 @@ public class DBCustomers {
         }
     }
 
+    /**
+     * This method searches the allCustomers list for the customer value with the given CustomerID integer, or returns no value and
+     * displays an error indicating that no such customer was found.
+     * @param searchCustomerId The ID of the customer to be found in the list.
+     * @return Returns the customer object, unless no value is found, then returns null.
+     */
    public static Customers lookupCustomer(int searchCustomerId) {
         for (Customers c : allCustomers) {
             if (searchCustomerId == c.getCustomerId()) {
@@ -69,6 +91,11 @@ public class DBCustomers {
         return null;
     }
 
+    /**
+     * Searches the allCustomers for all values with names that start with the given String.
+     * @param customerName The string passed in to be searched for.
+     * @return A list of all customers with names that start with the given String.
+     */
     public static ObservableList<Customers> lookupCustomer(String customerName) {
        ObservableList<Customers> searchedCustomers = FXCollections.observableArrayList();
        for (Customers c : allCustomers) {
@@ -79,6 +106,12 @@ public class DBCustomers {
        return searchedCustomers;
     }
 
+    /**
+     * Updates the database by deleting first the appointments from the appointment table,
+     * then the customer itself from the customer table, of the customer passed to the method.
+     * Also removes it from the local allCustomers ObservableList.
+     * @param customer The customer to be deleted.
+     */
     public static void deleteCustomer(Customers customer) {
         try {
             String sql = "DELETE FROM APPOINTMENTS WHERE CUSTOMER_ID = " + customer.getCustomerId();

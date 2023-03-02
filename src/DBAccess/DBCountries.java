@@ -8,10 +8,17 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 
+/**
+ * This class defines the methods querying the database data for the Countries class.
+ */
 public class DBCountries {
 
     public static ObservableList<Countries> countryList = FXCollections.observableArrayList();
 
+    /**
+     * This method queries the database for all data in the countries table and adds
+     * them to the countryList ObservableList to be used throughout the application.
+     */
     public static void getAllCountries() {
 
         try {
@@ -29,6 +36,12 @@ public class DBCountries {
         }
     }
 
+    /**
+     * This method searches for the Country in which the given Division is found
+     * in the CountryList.
+     * @param searchDiv The division whose country is being searched for.
+     * @return Returns the country that corresponds to the given Division.
+     */
     public static Countries getCountry(Divisions searchDiv) {
         for (Countries c : countryList) {
             if (c.getCountryId() == searchDiv.getCountryId()) {

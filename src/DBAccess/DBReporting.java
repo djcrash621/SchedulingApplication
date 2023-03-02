@@ -12,8 +12,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
+/**
+ * This method defines the methods querying the database for the information
+ * needed for the reporting page of the application.
+ */
 public class DBReporting {
 
+    /**
+     * This method queries the database for the distinct type values found in
+     * the appointments table.
+     * @return An observable list of all queried types.
+     * @throws SQLException Exception thrown from database command.
+     */
     public static ObservableList<String> getTypes() throws SQLException {
         ObservableList<String> typeList = FXCollections.observableArrayList();
         String sql = "SELECT DISTINCT TYPE FROM APPOINTMENTS";
@@ -25,6 +35,12 @@ public class DBReporting {
         return typeList;
     }
 
+    /**
+     * This method queries the database for the distinct month values found in
+     * the appointments table.
+     * @return An observable list of all queried months.
+     * @throws SQLException Exception thrown from database command.
+     */
     public static ObservableList<String> getMonths() throws SQLException {
         ObservableList<String> typeList = FXCollections.observableArrayList();
         String sql = "SELECT DISTINCT MONTHNAME(START) AS MONTHS FROM APPOINTMENTS";
@@ -36,6 +52,12 @@ public class DBReporting {
         return typeList;
     }
 
+    /**
+     * Queries the database for all appointments with the given type and monthname values of the start date.
+     * @param selectedType The type to search for in the appointments table.
+     * @param selectedMonth The month to search for in the start column of the appointments table.
+     * @return An observable list of all appointments with the matching values.
+     */
     public static ObservableList<Appointments> typeMonthApts(String selectedType, String selectedMonth) {
         ObservableList<Appointments> list = FXCollections.observableArrayList();
         try {
@@ -62,6 +84,11 @@ public class DBReporting {
         return list;
     }
 
+    /**
+     * This method queries the database for all appointments with the given contact value.
+     * @param givenContact The contact to search for in the customerId column of the appointments table.
+     * @return An observable list of all appointments with the matching value.
+     */
     public static ObservableList<Appointments> getContactApts(Contacts givenContact) {
         ObservableList<Appointments> list = FXCollections.observableArrayList();
         try {
@@ -88,6 +115,11 @@ public class DBReporting {
         return list;
     }
 
+    /**
+     * Method queries the database for all appointments with the userID of the given user value.
+     * @param givenUser The user to search for in the appointments table.
+     * @return An observableList of the appointments with the matching user value.
+     */
     public static ObservableList<Appointments> getUserApts(Users givenUser) {
         ObservableList<Appointments> list = FXCollections.observableArrayList();
         try {

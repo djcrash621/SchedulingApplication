@@ -33,15 +33,14 @@ public class Scheduling_Application extends Application {
 
 
     /**
-     * Method that runs at application startup, calling necessary methods for the application and loading the initial login page
-     * @param stage The application stage
-     * @throws Exception Exception for page change
+     * Method that runs at application startup, calling necessary methods for the application and loading the initial login page.
+     * @param stage The application stage.
+     * @throws Exception Exception for page change.
      */
     @Override
     public void start(Stage stage) throws Exception{
 
         //Locale.setDefault(new Locale("fr", "FR"));
-        DBUsers.allUsers = DBUsers.getAllUsers();
         Appointments.convertedToZoneTime(Appointments.unconvertedTime);
 
         ResourceBundle rb = ResourceBundle.getBundle(rbLocation, Locale.getDefault());
@@ -52,6 +51,8 @@ public class Scheduling_Application extends Application {
         DBAppointments.getAllAppointments();
         DBCountries.getAllCountries();
         DBContacts.getAllContacts();
+        DBDivisions.getAllDivisions();
+        DBUsers.getAllUsers();
 
         FXMLLoader fxmlLoader = new FXMLLoader(Scheduling_Application.class.getResource("../JavaFXML/login_page.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
@@ -62,8 +63,8 @@ public class Scheduling_Application extends Application {
 
 
     /**
-     * Method used to display an error message in the UI
-     * @param errorMessage Error message to be displayed
+     * Method used to display an error message in the UI.
+     * @param errorMessage Error message to be displayed.
      */
     public static void displayError(String errorMessage) {
         Alert alert = new Alert(Alert.AlertType.ERROR, errorMessage, ButtonType.OK);
@@ -72,10 +73,10 @@ public class Scheduling_Application extends Application {
 
     /**
      * Method to change page to specified page.
-     * @param actionEvent Action to trigger method
-     * @param pageChange the directory of the page to be changed to
-     * @param title Title to set for the new page
-     * @throws IOException Exception for page change
+     * @param actionEvent Action to trigger method.
+     * @param pageChange the directory of the page to be changed to.
+     * @param title Title to set for the new page.
+     * @throws IOException Exception for page change.
      */
     public static void changePage(ActionEvent actionEvent, String pageChange, String title) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Scheduling_Application.class.getResource(pageChange));
@@ -87,8 +88,8 @@ public class Scheduling_Application extends Application {
     }
 
     /**
-     * Main method to make database connection, launch application, and close the login controller
-     * @param args Unused parameter
+     * Main method to make database connection, launch application, and close the login controller.
+     * @param args Unused parameter.
      */
     public static void main(String[] args) {
         //System.out.println(Locale.getDefault().getLanguage());
