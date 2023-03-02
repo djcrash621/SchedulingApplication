@@ -1,5 +1,6 @@
 package Controllers;
 
+import DBAccess.DBAppointments;
 import DBAccess.DBCountries;
 import DBAccess.DBCustomers;
 import DBAccess.DBDivisions;
@@ -61,6 +62,32 @@ public class edit_customer_controller implements Initializable {
      * @throws IOException Exception thrown from page change.
      */
     public void saveCustomer(ActionEvent actionEvent) throws IOException {
+        if (customerNameField.getText().isBlank()) {
+            Scheduling_Application.displayError("Customer Name must not be blank.");
+            return;
+        }
+        else if (addressField.getText().isBlank()) {
+            Scheduling_Application.displayError("Address must not be be blank.");
+            return;
+        }
+        else if (postalCodeField.getText().isBlank()) {
+            Scheduling_Application.displayError("Postal code must not be blank");
+            return;
+        }
+        else if (phoneNumField.getText().isBlank()) {
+            Scheduling_Application.displayError("Phone number must not be blank");
+            return;
+        }
+        else if (countryComboBox.getSelectionModel().isEmpty()) {
+            Scheduling_Application.displayError("Country must be selected.");
+            return;
+        }
+        else if (divisionComboBox.getSelectionModel().isEmpty()) {
+            Scheduling_Application.displayError("Division must be selected.");
+            return;
+        }
+
+        DBCustomers.allCustomers.removeAll(passedInCustomer);
         DBCustomers.updateCustomer(new Customers(passedInCustomer.getCustomerId(), customerNameField.getText(), addressField.getText(), postalCodeField.getText(), phoneNumField.getText(), divisionComboBox.getSelectionModel().getSelectedItem().getDivisionId()));
         Scheduling_Application.changePage(actionEvent,"../JavaFXML/welcome_page.fxml", "Welcome Page");
     }

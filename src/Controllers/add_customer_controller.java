@@ -19,6 +19,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -43,7 +44,7 @@ public class add_customer_controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        divisionComboBox.setItems(DBDivisions.allDivisions);
+        //divisionComboBox.setItems(DBDivisions.allDivisions);
         countryComboBox.setItems(DBCountries.countryList);
     }
 
@@ -53,11 +54,31 @@ public class add_customer_controller implements Initializable {
      * @throws IOException Exception for page change.
      */
     public void saveCustomer(ActionEvent actionEvent) throws IOException {
-        if (customerNameField.getText().isBlank()) { Scheduling_Application.displayError("Customer Name must not be blank."); }
-        else if (addressField.getText().isBlank()) { Scheduling_Application.displayError("Address must not be be blank."); }
-        else if (postalCodeField.getText().isBlank()) { Scheduling_Application.displayError("Postal code must not be blank"); }
-        else if (phoneNumField.getText().isBlank()) { Scheduling_Application.displayError("Phone number must not be blank"); }
 
+        if (customerNameField.getText().isBlank()) {
+            Scheduling_Application.displayError("Customer Name must not be blank.");
+            return;
+        }
+        else if (addressField.getText().isBlank()) {
+            Scheduling_Application.displayError("Address must not be be blank.");
+            return;
+        }
+        else if (postalCodeField.getText().isBlank()) {
+            Scheduling_Application.displayError("Postal code must not be blank");
+            return;
+        }
+        else if (phoneNumField.getText().isBlank()) {
+            Scheduling_Application.displayError("Phone number must not be blank");
+            return;
+        }
+        else if (countryComboBox.getSelectionModel().isEmpty()) {
+            Scheduling_Application.displayError("Country must be selected.");
+            return;
+        }
+        else if (divisionComboBox.getSelectionModel().isEmpty()) {
+            Scheduling_Application.displayError("Division must be selected.");
+            return;
+        }
         DBCustomers.addCustomer(new Customers(0, customerNameField.getText(), addressField.getText(), postalCodeField.getText(), phoneNumField.getText(), divisionComboBox.getSelectionModel().getSelectedItem().getDivisionId()));
         Scheduling_Application.changePage(actionEvent, "../JavaFXML/welcome_page.fxml", "Edit Customer Form");
     }
@@ -76,6 +97,7 @@ public class add_customer_controller implements Initializable {
      * @param actionEvent Action Taken to trigger method.
      */
     public void filterByCountry(ActionEvent actionEvent) {
+        //divisionComboBox.getSelectionModel().clearSelection();
         ObservableList<Divisions> divisionsInCountry = FXCollections.observableArrayList();
         for (Divisions d: DBDivisions.allDivisions) {
             if (d.getCountryId() == countryComboBox.getValue().getCountryId()) {
@@ -84,4 +106,5 @@ public class add_customer_controller implements Initializable {
         }
         divisionComboBox.setItems(divisionsInCountry);
     }
+
 }

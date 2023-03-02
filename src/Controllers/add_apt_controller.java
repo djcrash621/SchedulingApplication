@@ -59,9 +59,46 @@ public class add_apt_controller implements Initializable {
      * @throws SQLException Exception for SQL command.
      */
     public void saveAppointment(ActionEvent actionEvent) throws IOException, SQLException {
+        if (customerDropdown.getSelectionModel().isEmpty()) {
+            Scheduling_Application.displayError("Customer must be selected.");
+            return;
+        }
+        else if (titleField.getText().isBlank()) {
+            Scheduling_Application.displayError("Title field must not be empty.");
+            return;
+        }
+        else if (locationField.getText().isBlank()) {
+            Scheduling_Application.displayError("Location field must not be empty.");
+            return;
+        }
+        else if (typeField.getText().isBlank()) {
+            Scheduling_Application.displayError("Type Field must not be empty.");
+            return;
+        }
+        else if (descriptionField.getText().isBlank()) {
+            Scheduling_Application.displayError("Description field must not be empty.");
+            return;
+        }
+        else if (DateChoice.getValue() == null) {
+            Scheduling_Application.displayError("Date Picker must be selected.");
+            return;
+        }
+        else if (startTimePicker.getValue() == null) {
+            Scheduling_Application.displayError("Start time must be selected.");
+            return;
+        }
+        else if (endTimePicker.getValue() == null) {
+            Scheduling_Application.displayError("End time must be selected.");
+            return;
+        }
+        else if (contactDropDown.getValue() == null) {
+            Scheduling_Application.displayError("Contact must be selected.");
+            return;
+        }
         if (Appointments.errorCheckDates(DateChoice.getValue(), startTimePicker.getValue(), endTimePicker.getValue())) {
             return;
         }
+
         for (Appointments a : DBAppointments.allAppointments) {
             if (a.getCustomerId() == customerDropdown.getValue().getCustomerId()) {
                 if (DateChoice.getValue().equals(a.getStart().toLocalDate())){

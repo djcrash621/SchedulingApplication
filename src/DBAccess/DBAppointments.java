@@ -174,14 +174,11 @@ public class DBAppointments {
             e.printStackTrace();;
         }
 
-        DBAppointments.allAppointments.removeAll(appointment);
         DBAppointments.allAppointments.add(new Appointments(getAptId(appointment.getTitle()), appointment.getTitle(), appointment.getDescription(), appointment.getLocation(), appointment.getType(), appointment.getStart(), appointment.getEnd(), appointment.getCustomerId(), appointment.getUserId(), appointment.getContactId()));
         if (appointment.getStart().isAfter(LocalDateTime.now()) && appointment.getStart().plusDays(7).isAfter(appointment.getStart())) {
-            DBAppointments.weeklyAppointments.removeAll(appointment);
             DBAppointments.weeklyAppointments.add(new Appointments(getAptId(appointment.getTitle()), appointment.getTitle(), appointment.getDescription(), appointment.getLocation(), appointment.getType(), appointment.getStart(), appointment.getEnd(), appointment.getCustomerId(), appointment.getUserId(), appointment.getContactId()));
         }
         if (appointment.getStart().getMonth() == LocalDateTime.now().getMonth()) {
-            DBAppointments.monthlyAppointments.removeAll(appointment);
             DBAppointments.monthlyAppointments.add(new Appointments(getAptId(appointment.getTitle()), appointment.getTitle(), appointment.getDescription(), appointment.getLocation(), appointment.getType(), appointment.getStart(), appointment.getEnd(), appointment.getCustomerId(), appointment.getUserId(), appointment.getContactId()));
         }
     }
@@ -201,7 +198,6 @@ public class DBAppointments {
             result = rs.getInt("APPOINTMENT_ID");
         }
         return result;
-
     }
 
 

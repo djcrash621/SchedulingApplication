@@ -22,6 +22,8 @@
    <ChoiceBox fx:id="endTimePicker" layoutX="404.0" layoutY="188.0" prefWidth="150.0" />
    <Label layoutX="26.0" layoutY="192.0" text="Start Time:" />
    <Label layoutX="341.0" layoutY="192.0" text="End Time:" />
+   <ComboBox fx:id="contactDropDown" layoutX="404.0" layoutY="124.0" prefWidth="150.0" />
+
    <TextField fx:id="aptIdField" disable="true" layoutX="102.0" layoutY="59.0" prefHeight="25.0" prefWidth="54.0" />
    <Label layoutX="66.0" layoutY="63.0" text="ID:" />
 </AnchorPane>

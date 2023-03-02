@@ -1,6 +1,7 @@
 package DBAccess;
 
 import Main.Scheduling_Application;
+import Model.Appointments;
 import Model.Customers;
 import Utilities.JDBC;
 import javafx.collections.FXCollections;
@@ -54,9 +55,11 @@ public class DBCustomers {
                     updatedCustomer.getDivisionId() + "\nWHERE CUSTOMER_ID = " + updatedCustomer.getCustomerId();
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.executeUpdate();
+            allCustomers.add(new Customers(updatedCustomer.getCustomerId(), updatedCustomer.getCustomerName(), updatedCustomer.getAddress(), updatedCustomer.getPostalCode(), updatedCustomer.getPhoneNum(), updatedCustomer.getDivisionId()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
     /**
@@ -70,6 +73,7 @@ public class DBCustomers {
                     newCustomer.getPostalCode() + "', '" + newCustomer.getPhoneNum() + "', " + newCustomer.getDivisionId() + ")";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.executeUpdate();
+            allCustomers.add(new Customers(getCustomerID(newCustomer.getCustomerName()), newCustomer.getCustomerName(), newCustomer.getAddress(), newCustomer.getPostalCode(), newCustomer.getPhoneNum(), newCustomer.getDivisionId()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -121,10 +125,27 @@ public class DBCustomers {
             ps = JDBC.getConnection().prepareStatement(sql);
             ps.executeUpdate();
             allCustomers.remove(customer);
+            for (Appointments a : DBAppointments.allAppointments) {
+                if (a.getCustomerId() == customer.getCustomerId()) {
+                    DBAppointments.deleteApt(a);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    public static int getCustomerID(String customerName) throws SQLException {
+        String sql = "SELECT APPOINTMENT_ID FROM APPOINTMENTS WHERE TITLE = '" + customerName + "';";
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        int result = 0;
+        while (rs.next()){
+            result = rs.getInt("APPOINTMENT_ID");
+        }
+        return result;
+    }
+
 
 
 }

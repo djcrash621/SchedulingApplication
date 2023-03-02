@@ -42,7 +42,7 @@ public class DBContacts {
      * @param searchContactId The ID of the contact being searched for.
      * @return Returns the Contact with the given contactId.
      */
-    public Contacts findContact(int searchContactId) {
+    public static Contacts findContact(int searchContactId) {
         Contacts result = null;
         try {
             String sql = "SELECT * FROM CONTACTS WHERE CONTACT_ID = ?";

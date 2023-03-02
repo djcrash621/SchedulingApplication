@@ -1,9 +1,11 @@
 package Controllers;
 
 import DBAccess.DBAppointments;
+import DBAccess.DBContacts;
 import DBAccess.DBCustomers;
 import Main.Scheduling_Application;
 import Model.Appointments;
+import Model.Contacts;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -32,6 +34,7 @@ public class edit_apt_controller implements Initializable {
     public ChoiceBox<LocalTime> startTimePicker;
     public ChoiceBox<LocalTime > endTimePicker;
     public TextField aptIdField;
+    public ComboBox<Contacts> contactDropDown;
 
 
     /**
@@ -52,6 +55,8 @@ public class edit_apt_controller implements Initializable {
         startTimePicker.setValue(passedInAppointment.getStart().toLocalTime());
         endTimePicker.setValue(passedInAppointment.getEnd().toLocalTime());
         DateChoice.setValue(passedInAppointment.getStart().toLocalDate());
+        contactDropDown.setItems(DBContacts.allContacts);
+        contactDropDown.setValue(DBContacts.findContact(passedInAppointment.getContactId()));
     }
 
 
@@ -71,6 +76,38 @@ public class edit_apt_controller implements Initializable {
      * @throws SQLException Exception for database commands.
      */
     public void saveAppointment(ActionEvent actionEvent) throws IOException, SQLException {
+        if (titleField.getText().isBlank()) {
+            Scheduling_Application.displayError("Title field must not be empty.");
+            return;
+        }
+        else if (locationField.getText().isBlank()) {
+            Scheduling_Application.displayError("Location field must not be empty.");
+            return;
+        }
+        else if (typeField.getText().isBlank()) {
+            Scheduling_Application.displayError("Type Field must not be empty.");
+            return;
+        }
+        else if (descriptionField.getText().isBlank()) {
+            Scheduling_Application.displayError("Description field must not be empty.");
+            return;
+        }
+        else if (DateChoice.getValue() == null) {
+            Scheduling_Application.displayError("Date Picker must be selected.");
+            return;
+        }
+        else if (startTimePicker.getValue() == null) {
+            Scheduling_Application.displayError("Start time must be selected.");
+            return;
+        }
+        else if (endTimePicker.getValue() == null) {
+            Scheduling_Application.displayError("End time must be selected.");
+            return;
+        }
+        else if (contactDropDown.getValue() == null) {
+            Scheduling_Application.displayError("Contact must be selected.");
+            return;
+        }
         if (Appointments.errorCheckDates(DateChoice.getValue(), startTimePicker.getValue(), endTimePicker.getValue())) {
             return;
         }
@@ -87,6 +124,14 @@ public class edit_apt_controller implements Initializable {
                 passedInAppointment.getUserId(),
                 passedInAppointment.getUserId()
                 );
+
+        DBAppointments.allAppointments.removeAll(passedInAppointment);
+        if (passedInAppointment.getStart().isAfter(LocalDateTime.now()) && passedInAppointment.getStart().plusDays(7).isAfter(passedInAppointment.getStart())) {
+            DBAppointments.weeklyAppointments.removeAll(passedInAppointment);
+        }
+        if (passedInAppointment.getStart().getMonth() == LocalDateTime.now().getMonth()) {
+            DBAppointments.monthlyAppointments.removeAll(passedInAppointment);
+        }
         DBAppointments.updateApt(newAppointment);
         Scheduling_Application.changePage(actionEvent, "../JavaFXML/appointments_page.fxml", "Appointments");
     }
