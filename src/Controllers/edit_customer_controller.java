@@ -37,6 +37,7 @@ public class edit_customer_controller implements Initializable {
     public Button cancelBtn;
     public ComboBox<Divisions> divisionComboBox;
     public ComboBox<Countries> countryComboBox;
+    public TextField custIdField;
 
     /**
      * This method initializes the page, populating the combo box with the country and division observable lists,
@@ -46,6 +47,7 @@ public class edit_customer_controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        custIdField.setText(String.valueOf(passedInCustomer.getCustomerId()));
         customerNameField.setText(passedInCustomer.getCustomerName());
         addressField.setText(passedInCustomer.getAddress());
         postalCodeField.setText(passedInCustomer.getPostalCode());

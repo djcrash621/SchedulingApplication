@@ -19,4 +19,6 @@
    <ComboBox fx:id="divisionComboBox" layoutX="124.0" layoutY="230.0" prefHeight="25.0" prefWidth="98.0" />
    <Label layoutX="64.0" layoutY="192.0" text="Country:" />
    <ComboBox fx:id="countryComboBox" layoutX="124.0" layoutY="188.0" onAction="#filterByCountry" prefHeight="25.0" prefWidth="98.0" />
+   <Label layoutX="13.0" layoutY="14.0" text="ID:" />
+   <TextField fx:id="custIdField" disable="true" editable="false" layoutX="35.0" layoutY="10.0" prefHeight="25.0" prefWidth="45.0" />
 </AnchorPane>

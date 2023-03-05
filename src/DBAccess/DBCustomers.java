@@ -118,30 +118,30 @@ public class DBCustomers {
      */
     public static void deleteCustomer(Customers customer) {
         try {
-            String sql = "DELETE FROM APPOINTMENTS WHERE CUSTOMER_ID = " + customer.getCustomerId();
+            DBAppointments.allAppointments.forEach((apt) -> {
+                if (apt.getCustomerId() == customer.getCustomerId()) {
+                    DBAppointments.deleteApt(apt);
+                }
+            });
+
+            System.out.println("Deleting customer from database.");
+            String sql = "DELETE FROM CUSTOMERS WHERE CUSTOMER_ID = " + customer.getCustomerId() + ";";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.executeUpdate();
-            sql = "DELETE FROM CUSTOMERS WHERE CUSTOMER_ID = " + customer.getCustomerId();
-            ps = JDBC.getConnection().prepareStatement(sql);
-            ps.executeUpdate();
+            System.out.println("Printing from local table.");
             allCustomers.remove(customer);
-            for (Appointments a : DBAppointments.allAppointments) {
-                if (a.getCustomerId() == customer.getCustomerId()) {
-                    DBAppointments.deleteApt(a);
-                }
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public static int getCustomerID(String customerName) throws SQLException {
-        String sql = "SELECT APPOINTMENT_ID FROM APPOINTMENTS WHERE TITLE = '" + customerName + "';";
+        String sql = "SELECT CUSTOMER_ID FROM CUSTOMERS WHERE CUSTOMER_NAME = '" + customerName + "';";
         PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         int result = 0;
         while (rs.next()){
-            result = rs.getInt("APPOINTMENT_ID");
+            result = rs.getInt("CUSTOMER_ID");
         }
         return result;
     }

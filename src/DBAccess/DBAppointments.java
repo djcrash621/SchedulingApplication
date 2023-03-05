@@ -112,16 +112,21 @@ public class DBAppointments {
      */
     public static void deleteApt(Appointments appointment) {
         try {
-            String sql = "DELETE FROM CLIENT_SCHEDULE.APPOINTMENTS WHERE APPOINTMENT_ID = " + appointment.getAppointmentId();
+            String sql = "DELETE FROM APPOINTMENTS WHERE APPOINTMENT_ID = " + appointment.getAppointmentId() + ";";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.executeQuery();
+            ps.executeUpdate();
             allAppointments.removeAll(appointment);
-            if (appointment.getStart().isAfter(LocalDateTime.now()) && appointment.getStart().plusDays(7).isAfter(appointment.getStart())) {
-                weeklyAppointments.removeAll(appointment);
-            }
-            if (appointment.getStart().getMonth() == LocalDateTime.now().getMonth()) {
-                monthlyAppointments.removeAll(appointment);
-            }
+            weeklyAppointments.forEach((apt) -> {
+                if (apt.getAppointmentId() == appointment.getAppointmentId()) {
+                    weeklyAppointments.removeAll(apt);
+                }
+            });
+            monthlyAppointments.forEach((apt) -> {
+                if (apt.getAppointmentId()== appointment.getAppointmentId()) {
+                    monthlyAppointments.removeAll(apt);
+                }
+            });
+            System.out.println("Finished deleting appointment!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -146,7 +151,7 @@ public class DBAppointments {
             e.printStackTrace();
         }
         DBAppointments.allAppointments.add(new Appointments(getAptId(appointment.getTitle()), appointment.getTitle(), appointment.getDescription(), appointment.getLocation(), appointment.getType(), appointment.getStart(), appointment.getEnd(), appointment.getCustomerId(), appointment.getUserId(), appointment.getContactId()));
-        if (appointment.getStart().isAfter(LocalDateTime.now()) && appointment.getStart().plusDays(7).isAfter(appointment.getStart())) {
+        if (appointment.getStart().isAfter(LocalDateTime.now()) && LocalDateTime.now().plusDays(7).isAfter(appointment.getStart())) {
             DBAppointments.weeklyAppointments.add(new Appointments(getAptId(appointment.getTitle()), appointment.getTitle(), appointment.getDescription(), appointment.getLocation(), appointment.getType(), appointment.getStart(), appointment.getEnd(), appointment.getCustomerId(), appointment.getUserId(), appointment.getContactId()));
         }
         if (appointment.getStart().getMonth() == LocalDateTime.now().getMonth()) {
@@ -175,7 +180,7 @@ public class DBAppointments {
         }
 
         DBAppointments.allAppointments.add(new Appointments(getAptId(appointment.getTitle()), appointment.getTitle(), appointment.getDescription(), appointment.getLocation(), appointment.getType(), appointment.getStart(), appointment.getEnd(), appointment.getCustomerId(), appointment.getUserId(), appointment.getContactId()));
-        if (appointment.getStart().isAfter(LocalDateTime.now()) && appointment.getStart().plusDays(7).isAfter(appointment.getStart())) {
+        if (appointment.getStart().isAfter(LocalDateTime.now()) && LocalDateTime.now().plusDays(7).isAfter(appointment.getStart())) {
             DBAppointments.weeklyAppointments.add(new Appointments(getAptId(appointment.getTitle()), appointment.getTitle(), appointment.getDescription(), appointment.getLocation(), appointment.getType(), appointment.getStart(), appointment.getEnd(), appointment.getCustomerId(), appointment.getUserId(), appointment.getContactId()));
         }
         if (appointment.getStart().getMonth() == LocalDateTime.now().getMonth()) {

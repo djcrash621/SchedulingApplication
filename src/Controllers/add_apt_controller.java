@@ -99,19 +99,6 @@ public class add_apt_controller implements Initializable {
             return;
         }
 
-        for (Appointments a : DBAppointments.allAppointments) {
-            if (a.getCustomerId() == customerDropdown.getValue().getCustomerId()) {
-                if (DateChoice.getValue().equals(a.getStart().toLocalDate())){
-                    if (startTimePicker.getValue().isAfter(a.getStart().toLocalTime()) && endTimePicker.getValue().isBefore(a.getEnd().toLocalTime()) ||
-                    endTimePicker.getValue().isAfter(a.getStart().toLocalTime()) && endTimePicker.getValue().isBefore(a.getEnd().toLocalTime()) ||
-                    startTimePicker.getValue().isAfter(a.getStart().toLocalTime()) && startTimePicker.getValue().isBefore(a.getEnd().toLocalTime())) {
-                        Scheduling_Application.displayError("Customer already has existing appointment during " + startTimePicker.getValue().toString() + " and " + endTimePicker.getValue().toString() + " time window.");
-                        return;
-                    }
-                }
-            }
-        }
-
         Appointments newAppointment = new Appointments(
                 0,
                 titleField.getText(),

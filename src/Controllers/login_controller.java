@@ -8,10 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,24 +28,17 @@ public class login_controller implements Initializable {
     public static ResourceBundle rb;
     public static String fileName = "login_activity.txt";
     public static FileWriter fWriter;
+    public static PrintWriter output;
 
     static {
         try {
             fWriter = new FileWriter(fileName, true);
+            output =  new PrintWriter(new FileOutputStream(new File(fileName), true));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static PrintWriter output;
-
-    static {
-        try {
-            output = new PrintWriter(fileName);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * This method initializes the page, setting the text to the correct license via the resource bundle.
