@@ -44,7 +44,11 @@ public class edit_apt_controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        customerLbl.setText("Customer: " + Objects.requireNonNull(DBCustomers.lookupCustomer(passedInAppointment.getCustomerId())).getCustomerName());
+        try {
+            customerLbl.setText("Customer: " + Objects.requireNonNull(DBCustomers.lookupCustomer(passedInAppointment.getCustomerId())).getCustomerName());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         aptIdField.setText(String.valueOf(passedInAppointment.getAppointmentId()));
         titleField.setText(passedInAppointment.getTitle());
         locationField.setText(passedInAppointment.getLocation());
@@ -125,13 +129,6 @@ public class edit_apt_controller implements Initializable {
                 passedInAppointment.getUserId()
                 );
 
-        DBAppointments.allAppointments.removeAll(passedInAppointment);
-        if (passedInAppointment.getStart().isAfter(LocalDateTime.now()) && passedInAppointment.getStart().plusDays(7).isAfter(passedInAppointment.getStart())) {
-            DBAppointments.weeklyAppointments.removeAll(passedInAppointment);
-        }
-        if (passedInAppointment.getStart().getMonth() == LocalDateTime.now().getMonth()) {
-            DBAppointments.monthlyAppointments.removeAll(passedInAppointment);
-        }
         DBAppointments.updateApt(newAppointment);
         Scheduling_Application.changePage(actionEvent, "../JavaFXML/appointments_page.fxml", "Appointments");
     }

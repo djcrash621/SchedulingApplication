@@ -63,7 +63,7 @@ public class welcome_controller implements Initializable {
         welcomeLbl.setText("Welcome: " + Scheduling_Application.activeUser.getUserName());
         divisionDropdown.setItems(DBDivisions.allDivisions);
         CountryDropdown.setItems(DBCountries.countryList);
-        customerTbl.setItems(DBCustomers.allCustomers);
+        customerTbl.setItems(DBCustomers.getAllCustomers());
         customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         phoneNumCol.setCellValueFactory(new PropertyValueFactory<>("phoneNum"));
@@ -98,7 +98,7 @@ public class welcome_controller implements Initializable {
         ObservableList<Customers> searchResult = FXCollections.observableArrayList();
 
         if (Objects.equals(searchVal, "")) {
-            customerTbl.setItems(DBCustomers.allCustomers);
+            customerTbl.setItems(DBCustomers.lookupCustomer(searchVal));
             return;
         }
         try {
@@ -148,7 +148,7 @@ public class welcome_controller implements Initializable {
     public void filterByDivisions(ActionEvent actionEvent) {
         ObservableList<Customers> filterCustomers = FXCollections.observableArrayList();
 
-        for (Customers c: DBCustomers.allCustomers) {
+        for (Customers c: DBCustomers.getAllCustomers()) {
             if (c.getDivisionId() == divisionDropdown.getValue().getDivisionId()) {
                 filterCustomers.add(c);
             }
@@ -162,7 +162,7 @@ public class welcome_controller implements Initializable {
      * @param actionEvent Action taken to trigger event.
      */
     public void resetTable(ActionEvent actionEvent) {
-        customerTbl.setItems(DBCustomers.allCustomers);
+        customerTbl.setItems(DBCustomers.getAllCustomers());
         customerSearch.setText("");
         divisionDropdown.getSelectionModel().clearSelection();
         CountryDropdown.getSelectionModel().clearSelection();
@@ -177,6 +177,7 @@ public class welcome_controller implements Initializable {
     public void deleteCustomer(ActionEvent actionEvent) {
         Customers SA = customerTbl.getSelectionModel().getSelectedItem();
         DBCustomers.deleteCustomer(SA);
+        customerTbl.setItems(DBCustomers.getAllCustomers());
         Alert deleted = new Alert(Alert.AlertType.INFORMATION, SA.getCustomerName() + " deleted from records.", ButtonType.OK);
         deleted.showAndWait();
     }
@@ -200,7 +201,7 @@ public class welcome_controller implements Initializable {
 
         divisionDropdown.setItems(divisionsInCountry);
 
-        for (Customers c: DBCustomers.allCustomers) {
+        for (Customers c: DBCustomers.getAllCustomers()) {
             for (Divisions d : divisionsInCountry) {
                 if (c.getDivisionId() == d.getDivisionId()) {
                     customersInCountry.add(c);

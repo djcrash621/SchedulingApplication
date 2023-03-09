@@ -84,7 +84,12 @@ public class report_page_controller implements Initializable {
             typeMonthEndCol.setCellValueFactory(new PropertyValueFactory<>("end"));
             typeMonthCustomerNameCol.setCellValueFactory(cellData -> {
                 Appointments format = cellData.getValue();
-                return new SimpleStringProperty(Objects.requireNonNull(DBCustomers.lookupCustomer(format.getCustomerId())).getCustomerName());
+                try {
+                    return new SimpleStringProperty(Objects.requireNonNull(DBCustomers.lookupCustomer(format.getCustomerId())).getCustomerName());
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                    return null;
+                }
             });
             contactAptIdCol.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
             contactTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -94,7 +99,12 @@ public class report_page_controller implements Initializable {
             contactEndCol.setCellValueFactory(new PropertyValueFactory<>("end"));
             contactCustomerNameCol.setCellValueFactory(cellData -> {
                 Appointments format = cellData.getValue();
-                return new SimpleStringProperty(Objects.requireNonNull(DBCustomers.lookupCustomer(format.getCustomerId())).getCustomerName());
+                try {
+                    return new SimpleStringProperty(Objects.requireNonNull(DBCustomers.lookupCustomer(format.getCustomerId())).getCustomerName());
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                    return null;
+                }
             });
             userAptIdCol.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
             userTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -104,7 +114,12 @@ public class report_page_controller implements Initializable {
             userEndCol.setCellValueFactory(new PropertyValueFactory<>("end"));
             userCustomerNameCol.setCellValueFactory(cellData -> {
                 Appointments format = cellData.getValue();
-                return new SimpleStringProperty(Objects.requireNonNull(DBCustomers.lookupCustomer(format.getCustomerId())).getCustomerName());
+                try {
+                    return new SimpleStringProperty(Objects.requireNonNull(DBCustomers.lookupCustomer(format.getCustomerId())).getCustomerName());
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                    return null;
+                }
             });
         } catch (SQLException e) {
             e.printStackTrace();

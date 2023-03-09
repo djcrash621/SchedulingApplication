@@ -46,9 +46,6 @@ public class Scheduling_Application extends Application {
         ResourceBundle rb = ResourceBundle.getBundle(rbLocation, Locale.getDefault());
         login_controller.getResourceBundle(rb);
         DBCustomers.getAllCustomers();
-        DBAppointments.getWeeklyAppointments();
-        DBAppointments.getMonthlyAppointments();
-        DBAppointments.getAllAppointments();
         DBCountries.getAllCountries();
         DBContacts.getAllContacts();
         DBDivisions.getAllDivisions();

@@ -89,7 +89,6 @@ public class edit_customer_controller implements Initializable {
             return;
         }
 
-        DBCustomers.allCustomers.removeAll(passedInCustomer);
         DBCustomers.updateCustomer(new Customers(passedInCustomer.getCustomerId(), customerNameField.getText(), addressField.getText(), postalCodeField.getText(), phoneNumField.getText(), divisionComboBox.getSelectionModel().getSelectedItem().getDivisionId()));
         Scheduling_Application.changePage(actionEvent,"../JavaFXML/welcome_page.fxml", "Welcome Page");
     }

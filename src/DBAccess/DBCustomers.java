@@ -14,16 +14,13 @@ import java.sql.*;
  */
 public class DBCustomers {
 
-    public static ObservableList<Customers> allCustomers = FXCollections.observableArrayList();
 
     /**
      * This method queries the database for all data in the Customers table and
      * adds the values into the AllCustomers ObservableList used throughout the application.
      */
-    public static void getAllCustomers() {
-
-        allCustomers.clear();
-
+    public static ObservableList<Customers> getAllCustomers() {
+        ObservableList<Customers> allCustomers = FXCollections.observableArrayList();
         try {
             String sql = "SELECT * FROM CUSTOMERS";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -40,6 +37,7 @@ public class DBCustomers {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return allCustomers;
     }
 
     /**
@@ -55,7 +53,6 @@ public class DBCustomers {
                     updatedCustomer.getDivisionId() + "\nWHERE CUSTOMER_ID = " + updatedCustomer.getCustomerId();
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.executeUpdate();
-            allCustomers.add(new Customers(updatedCustomer.getCustomerId(), updatedCustomer.getCustomerName(), updatedCustomer.getAddress(), updatedCustomer.getPostalCode(), updatedCustomer.getPhoneNum(), updatedCustomer.getDivisionId()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -73,7 +70,6 @@ public class DBCustomers {
                     newCustomer.getPostalCode() + "', '" + newCustomer.getPhoneNum() + "', " + newCustomer.getDivisionId() + ")";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.executeUpdate();
-            allCustomers.add(new Customers(getCustomerID(newCustomer.getCustomerName()), newCustomer.getCustomerName(), newCustomer.getAddress(), newCustomer.getPostalCode(), newCustomer.getPhoneNum(), newCustomer.getDivisionId()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -85,14 +81,29 @@ public class DBCustomers {
      * @param searchCustomerId The ID of the customer to be found in the list.
      * @return Returns the customer object, unless no value is found, then returns null.
      */
-   public static Customers lookupCustomer(int searchCustomerId) {
-        for (Customers c : allCustomers) {
-            if (searchCustomerId == c.getCustomerId()) {
-                return  c;
+   public static Customers lookupCustomer(int searchCustomerId) throws SQLException {
+        Customers foundCustomer = null;
+        try {
+            String sql = "SELECT * FROM CUSTOMERS WHERE CUSTOMER_ID = ?;";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, searchCustomerId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int customerId = rs.getInt("CUSTOMER_ID");
+                String customer= rs.getString("CUSTOMER_NAME");
+                String address = rs.getString("ADDRESS");
+                String postalCode = rs.getString("POSTAL_CODE");
+                String phoneNum = rs.getString("PHONE");
+                int divisionID = rs.getInt("DIVISION_ID");
+                foundCustomer = new Customers(customerId, customer, address, postalCode, phoneNum, divisionID);
             }
+        }   catch (SQLException e) {
+            e.printStackTrace();
         }
-       Scheduling_Application.displayError("Customer with ID " + searchCustomerId + " not found.");
-        return null;
+        if (foundCustomer == null) {
+            Scheduling_Application.displayError("Customer with ID " + searchCustomerId + " not found.");
+        }
+        return foundCustomer;
     }
 
     /**
@@ -102,12 +113,24 @@ public class DBCustomers {
      */
     public static ObservableList<Customers> lookupCustomer(String customerName) {
        ObservableList<Customers> searchedCustomers = FXCollections.observableArrayList();
-       for (Customers c : allCustomers) {
-           if (c.getCustomerName().contains(customerName)) {
-               searchedCustomers.add(c);
-           }
-       }
-       return searchedCustomers;
+        try {
+            String sql = "SELECT * FROM CUSTOMERS WHERE CUSTOMER_NAME = ?;";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setString(1, customerName);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int customerId = rs.getInt("CUSTOMER_ID");
+                String customer= rs.getString("CUSTOMER_NAME");
+                String address = rs.getString("ADDRESS");
+                String postalCode = rs.getString("POSTAL_CODE");
+                String phoneNum = rs.getString("PHONE");
+                int divisionID = rs.getInt("DIVISION_ID");
+                searchedCustomers.add(new Customers(customerId, customer, address, postalCode, phoneNum, divisionID));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return searchedCustomers;
     }
 
     /**
@@ -118,18 +141,14 @@ public class DBCustomers {
      */
     public static void deleteCustomer(Customers customer) {
         try {
-            DBAppointments.allAppointments.forEach((apt) -> {
-                if (apt.getCustomerId() == customer.getCustomerId()) {
-                    DBAppointments.deleteApt(apt);
-                }
-            });
-
-            System.out.println("Deleting customer from database.");
-            String sql = "DELETE FROM CUSTOMERS WHERE CUSTOMER_ID = " + customer.getCustomerId() + ";";
+            String sql = "DELETE FROM APPOINTMENTS WHERE CUSTOMER_ID = ?;";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, customer.getCustomerId());
             ps.executeUpdate();
-            System.out.println("Printing from local table.");
-            allCustomers.remove(customer);
+            sql = "DELETE FROM CUSTOMERS WHERE CUSTOMER_ID = ?;";
+            PreparedStatement ps2 = JDBC.getConnection().prepareStatement(sql);
+            ps2.setInt(1, customer.getCustomerId());
+            ps2.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

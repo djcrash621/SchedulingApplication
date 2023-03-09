@@ -251,6 +251,7 @@ public class Appointments {
             Scheduling_Application.displayError("Start Time must not be greater than End Time");
             return true;
         }
+        /*
         AtomicBoolean error = new AtomicBoolean(false);
 
         //FIXME: ERROR HERE
@@ -268,8 +269,9 @@ public class Appointments {
                 }
             }
         });
-
+        */
         return false;
+
     }
 
 

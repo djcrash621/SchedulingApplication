@@ -74,7 +74,6 @@ public class appointments_page_controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        allAptTbl.setItems(DBAppointments.allAppointments);
         allAptId.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         allAptTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         allAptDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -85,7 +84,6 @@ public class appointments_page_controller implements Initializable {
         allAptEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
         allAptCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         allAptUserId.setCellValueFactory(new PropertyValueFactory<>("userId"));
-        weeklyAptTbl.setItems(DBAppointments.weeklyAppointments);
         weeklyAptId.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         weeklyTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         weeklyDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -96,7 +94,6 @@ public class appointments_page_controller implements Initializable {
         weeklyEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
         weeklyCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         weeklyUserId.setCellValueFactory(new PropertyValueFactory<>("userId"));
-        monthlyAptTbl.setItems(DBAppointments.monthlyAppointments);
         monthlyAptId.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         monthlyTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         monthlyDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -139,29 +136,32 @@ public class appointments_page_controller implements Initializable {
                 if (SA == null) {
                     throw new Exception("No Appointment Selected.") ;
                 }
+                DBAppointments.deleteApt(SA.getAppointmentId());
+                loadAllApts(actionEvent);
+                Alert deleted = new Alert(Alert.AlertType.INFORMATION, "Appointment: " + SA.getAppointmentId() + " of Type " + SA.getType() + " cancelled.", ButtonType.OK);
+                deleted.showAndWait();
             } else if (monthAptTab.isSelected()) {
                 SA = monthlyAptTbl.getSelectionModel().getSelectedItem();
                 if (SA == null) {
                     throw new Exception("No Appointment Selected.") ;
                 }
                 DBAppointments.deleteApt(SA.getAppointmentId());
-                Alert deleted = new Alert(Alert.AlertType.INFORMATION, "Appointment: " + SA.getAppointmentId() + " of Type " + SA.getType() + " cancelled.", ButtonType.OK);
                 loadMonthlyApts(actionEvent);
-                return;
+                Alert deleted = new Alert(Alert.AlertType.INFORMATION, "Appointment: " + SA.getAppointmentId() + " of Type " + SA.getType() + " cancelled.", ButtonType.OK);
+                deleted.showAndWait();
             } else if (weeklyAptTab.isSelected()) {
                 SA = weeklyAptTbl.getSelectionModel().getSelectedItem();
                 if (SA == null) {
                     throw new Exception("No Appointment Selected.") ;
                 }
+                DBAppointments.deleteApt(SA.getAppointmentId());
+                loadWeeklyApts(actionEvent);
+                Alert deleted = new Alert(Alert.AlertType.INFORMATION, "Appointment: " + SA.getAppointmentId() + " of Type " + SA.getType() + " cancelled.", ButtonType.OK);
+                deleted.showAndWait();
             }
         } catch (Exception e){
             Scheduling_Application.displayError(e.getMessage());
-            return;
         }
-        assert SA != null;
-        DBAppointments.deleteApt(SA);
-        Alert deleted = new Alert(Alert.AlertType.INFORMATION, "Appointment: " + SA.getAppointmentId() + " of Type " + SA.getType() + " cancelled.", ButtonType.OK);
-        deleted.showAndWait();
     }
 
     /**
@@ -208,6 +208,15 @@ public class appointments_page_controller implements Initializable {
     }
 
     public void loadMonthlyApts(Event event) {
-        monthlyAptTbl.setItems(DBAppointments.getMonthlyAppointments2());
+        monthlyAptTbl.setItems(DBAppointments.getMonthlyAppointments());
+    }
+
+    public void loadWeeklyApts(Event event) {
+        weeklyAptTbl.setItems(DBAppointments.getWeeklyAppointments());
+    }
+
+    public void loadAllApts(Event event) {
+        allAptTbl.setItems(DBAppointments.getAllAppointments());
+
     }
 }

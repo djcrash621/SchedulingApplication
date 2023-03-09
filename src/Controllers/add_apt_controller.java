@@ -45,7 +45,7 @@ public class add_apt_controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        customerDropdown.setItems(DBCustomers.allCustomers);
+        customerDropdown.setItems(DBCustomers.getAllCustomers());
         startTimePicker.setItems(Appointments.zonedTime);
         endTimePicker.setItems(Appointments.zonedTime);
         contactDropDown.setItems(DBContacts.allContacts);
