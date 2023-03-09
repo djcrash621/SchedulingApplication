@@ -4,6 +4,7 @@ import DBAccess.DBAppointments;
 import Main.Scheduling_Application;
 import Model.Appointments;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -143,6 +144,10 @@ public class appointments_page_controller implements Initializable {
                 if (SA == null) {
                     throw new Exception("No Appointment Selected.") ;
                 }
+                DBAppointments.deleteApt(SA.getAppointmentId());
+                Alert deleted = new Alert(Alert.AlertType.INFORMATION, "Appointment: " + SA.getAppointmentId() + " of Type " + SA.getType() + " cancelled.", ButtonType.OK);
+                loadMonthlyApts(actionEvent);
+                return;
             } else if (weeklyAptTab.isSelected()) {
                 SA = weeklyAptTbl.getSelectionModel().getSelectedItem();
                 if (SA == null) {
@@ -200,5 +205,9 @@ public class appointments_page_controller implements Initializable {
      */
     public void goToReporting(ActionEvent actionEvent) throws IOException {
         Scheduling_Application.changePage(actionEvent, "../JavaFXML/report_page.fxml", "Reports");
+    }
+
+    public void loadMonthlyApts(Event event) {
+        monthlyAptTbl.setItems(DBAppointments.getMonthlyAppointments2());
     }
 }

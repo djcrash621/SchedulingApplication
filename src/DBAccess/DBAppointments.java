@@ -116,6 +116,7 @@ public class DBAppointments {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.executeUpdate();
             allAppointments.removeAll(appointment);
+            //FIXME: ERROR HERE
             weeklyAppointments.forEach((apt) -> {
                 if (apt.getAppointmentId() == appointment.getAppointmentId()) {
                     weeklyAppointments.removeAll(apt);
@@ -127,6 +128,25 @@ public class DBAppointments {
                 }
             });
             System.out.println("Finished deleting appointment!");
+
+            /*
+            //These Failed As well
+            for (Appointments A: weeklyAppointments) {
+                if (a.getAppointmentId() == appointment.getAppointmentId()) {
+                    weeklyAppointments.removeAll(a);
+                }
+             }
+             for (Appointments A: monthlyAppointments) {
+                if (a.getAppointmentId() == appointment.getAppointmentId()) {
+                    monthlyAppointments.removeAll(a);
+                }
+             }
+             -----------------------------
+             weeklyAppointments.clear()
+             monthlyAppointments.clear()
+             getMonthlyAppointments();
+             getAWeeklyAppointments();
+             */
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -206,4 +226,41 @@ public class DBAppointments {
     }
 
 
+    public static ObservableList<Appointments> getMonthlyAppointments2() {
+        ObservableList<Appointments> list = FXCollections.observableArrayList();
+        try {
+            String sql = "SELECT * FROM APPOINTMENTS WHERE MONTH(START) = MONTH(NOW())";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int appointmentId = rs.getInt("APPOINTMENT_ID");
+                String title = rs.getString("TITLE");
+                String description = rs.getString("DESCRIPTION");
+                String location = rs.getString("LOCATION");
+                String type = rs.getString("TYPE");
+                LocalDateTime start = rs.getTimestamp("START").toLocalDateTime();
+                LocalDateTime end = rs.getTimestamp("End").toLocalDateTime();
+                int customerId = rs.getInt("CUSTOMER_ID");
+                int userId = rs.getInt("USER_ID");
+                int contactId = rs.getInt("CONTACT_ID");
+                Appointments newAppointment = new Appointments(appointmentId, title, description, location, type, start, end, customerId, userId, contactId);
+                list.add(newAppointment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public static void deleteApt(int appointmentId) {
+        try {
+            String sql = "DELETE FROM APPOINTMENTS WHERE APPOINTMENT_ID = ?";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1,appointmentId);
+            ps.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
 }

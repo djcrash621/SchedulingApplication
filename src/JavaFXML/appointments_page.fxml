@@ -22,7 +22,7 @@
                 </columns>
             </TableView>
         </Tab>
-        <Tab fx:id="monthAptTab" text="Monthly">
+        <Tab fx:id="monthAptTab" onSelectionChanged="#loadMonthlyApts" text="Monthly">
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" />
             <TableView fx:id="monthlyAptTbl" layoutX="24.0" layoutY="285.0" prefHeight="311.0" prefWidth="850.0">
                 <columns>

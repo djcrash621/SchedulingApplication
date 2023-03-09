@@ -1,12 +1,12 @@
 package Model;
 
+import DBAccess.DBAppointments;
 import Main.Scheduling_Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.Timestamp;
 import java.time.*;
-import java.time.chrono.ChronoLocalDate;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This class defines the appointments class and its methods.
@@ -237,7 +237,8 @@ public class Appointments {
      * @param endTime inputter appointment end time.
      * @return true if an error is found, false if not.
      */
-    public static boolean errorCheckDates(LocalDate startDate, LocalTime startTime, LocalTime endTime) {
+    public static boolean errorCheckDates(LocalDate startDate, LocalTime startTime, LocalTime endTime, Customers customer) {
+
         if (LocalDateTime.of(startDate, startTime).isBefore(LocalDateTime.now())) {
             Scheduling_Application.displayError("Must choose a future appointment time.");
             return true;
@@ -250,6 +251,24 @@ public class Appointments {
             Scheduling_Application.displayError("Start Time must not be greater than End Time");
             return true;
         }
+        AtomicBoolean error = new AtomicBoolean(false);
+
+        //FIXME: ERROR HERE
+        DBAppointments.allAppointments.forEach(appointments -> {
+            if (appointments.getCustomerId() == customer.getCustomerId()) {
+                if (startDate.equals(appointments.getStart().toLocalDate())) {
+                    if (startTime.isAfter(appointments.getStart().toLocalTime()) && startTime.isBefore(appointments.getEnd().toLocalTime())) {
+                        Scheduling_Application.displayError("Overlapping appointment for current customer.");
+                        error.set(true);
+                    }
+                    else if (endTime.isAfter(appointments.getStart().toLocalTime()) && endTime.isBefore(appointments.getEnd().toLocalTime())) {
+                        Scheduling_Application.displayError("Overlapping appointment for current customer.");
+                        error.set(true);
+                    }
+                }
+            }
+        });
+
         return false;
     }
 

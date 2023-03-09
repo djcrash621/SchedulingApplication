@@ -108,7 +108,7 @@ public class edit_apt_controller implements Initializable {
             Scheduling_Application.displayError("Contact must be selected.");
             return;
         }
-        if (Appointments.errorCheckDates(DateChoice.getValue(), startTimePicker.getValue(), endTimePicker.getValue())) {
+        if (Appointments.errorCheckDates(DateChoice.getValue(), startTimePicker.getValue(), endTimePicker.getValue(), DBCustomers.lookupCustomer(passedInAppointment.getCustomerId()))) {
             return;
         }
 
