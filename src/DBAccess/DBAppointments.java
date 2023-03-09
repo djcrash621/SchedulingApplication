@@ -19,7 +19,8 @@ import java.time.LocalDateTime;
 public class DBAppointments {
 
     /**
-     * This method queries the database for all Appointments and loads the value into the static allAppointments ObservableList
+     * This method queries the database for all Appointments
+     * @return returns the observable list of all appointments.
      */
     public static ObservableList<Appointments> getAllAppointments() {
         ObservableList<Appointments> allApts = FXCollections.observableArrayList();
@@ -49,7 +50,8 @@ public class DBAppointments {
 
 
     /**
-     * This method queries the database for appointments during the next 7 days and loads the value into the static weeklyAppointments ObservableList
+     * This method queries the database for appointments during the next 7 days
+     * @return returns the observable list of weekly appointments.
      */
     public static ObservableList<Appointments> getWeeklyAppointments() {
         ObservableList<Appointments> weeklyApts = FXCollections.observableArrayList();
@@ -79,7 +81,8 @@ public class DBAppointments {
 
 
     /**
-     * This method queries the database for appointments during the next 30 days and loads the value into the static monthlyAppointments ObservableList
+     * This method queries the database for appointments during the next 30 days
+     * @return returns the observable list of monthly appointments.
      */
     public static ObservableList<Appointments> getMonthlyAppointments() {
         ObservableList<Appointments> monthlyApts = FXCollections.observableArrayList();
@@ -108,7 +111,7 @@ public class DBAppointments {
     }
 
     /**
-     * Method that adds the given appointment to the database and all, weekly, and monthly observable lists
+     * Method that adds the given appointment to the database.
      * @param appointment Appointment to be added to lists ands database
      * @throws SQLException Exception caught if there is an error in the sql statement.
      */
@@ -128,7 +131,7 @@ public class DBAppointments {
 
 
     /**
-     * Method to update the appointment in the database and all Observable tables
+     * Method to update the appointment in the database.
      * @param appointment Appointment data to update into the table
      * @throws SQLException Exception caught if there is an error in the sql statement.
      */
@@ -164,6 +167,10 @@ public class DBAppointments {
         return result;
     }
 
+    /**
+     * Method to delete the given appointment from the database.
+     * @param appointmentId Appointment ID of the appointment to be deleted.
+     */
     public static void deleteApt(int appointmentId) {
         try {
             String sql = "DELETE FROM APPOINTMENTS WHERE APPOINTMENT_ID = ?";

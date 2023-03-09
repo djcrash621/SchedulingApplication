@@ -154,17 +154,5 @@ public class DBCustomers {
         }
     }
 
-    public static int getCustomerID(String customerName) throws SQLException {
-        String sql = "SELECT CUSTOMER_ID FROM CUSTOMERS WHERE CUSTOMER_NAME = '" + customerName + "';";
-        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
-        int result = 0;
-        while (rs.next()){
-            result = rs.getInt("CUSTOMER_ID");
-        }
-        return result;
-    }
-
-
 
 }

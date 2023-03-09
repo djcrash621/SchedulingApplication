@@ -207,14 +207,26 @@ public class appointments_page_controller implements Initializable {
         Scheduling_Application.changePage(actionEvent, "../JavaFXML/report_page.fxml", "Reports");
     }
 
+    /**
+     * This method loads the monthly appointments from the database into the monthly appointments table.
+     * @param event When the page tab is opened
+     */
     public void loadMonthlyApts(Event event) {
         monthlyAptTbl.setItems(DBAppointments.getMonthlyAppointments());
     }
 
+    /**
+     * This method loads the weekly appointments from the database into the weekly appointments table.
+     * @param event When the page tab is opened
+     */
     public void loadWeeklyApts(Event event) {
         weeklyAptTbl.setItems(DBAppointments.getWeeklyAppointments());
     }
 
+    /**
+     * This method loads all appointments from the database into the all appointments table.
+     * @param event When the page tab is opened
+     */
     public void loadAllApts(Event event) {
         allAptTbl.setItems(DBAppointments.getAllAppointments());
 

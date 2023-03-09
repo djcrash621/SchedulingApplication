@@ -71,8 +71,6 @@ public class edit_apt_controller implements Initializable {
     public static void handOffAppointment(Appointments appointment) {
         passedInAppointment = appointment;
     }
-
-
     /**
      * Saves the edited appointment to the table after first verifying the inputted values. Returns to appointment page on valid completion.
      * @param actionEvent Action taken to run method.

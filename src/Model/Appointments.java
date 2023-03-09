@@ -221,13 +221,13 @@ public class Appointments {
 
     /**
      * Converts the given time zone in eastern time to the local time zone.
+     * Lambda expression will convert the eastern time value to the value of the time in the local time zone.
      * @param easternTime List of eastern time zone values used for appointment setting.
      */
     public static void convertedToZoneTime(ObservableList<ZonedDateTime> easternTime) {
-        zonedTime = FXCollections.observableArrayList();
-        for (ZonedDateTime n : easternTime) {
-            zonedTime.add(n.withZoneSameInstant(Scheduling_Application.localZone).toLocalDateTime().toLocalTime());
-        }
+        easternTime.forEach(time -> {
+            zonedTime.add(time.withZoneSameInstant(Scheduling_Application.localZone).toLocalDateTime().toLocalTime());
+        });
     }
 
     /**
@@ -251,25 +251,31 @@ public class Appointments {
             Scheduling_Application.displayError("Start Time must not be greater than End Time");
             return true;
         }
-        /*
-        AtomicBoolean error = new AtomicBoolean(false);
 
-        //FIXME: ERROR HERE
-        DBAppointments.allAppointments.forEach(appointments -> {
-            if (appointments.getCustomerId() == customer.getCustomerId()) {
-                if (startDate.equals(appointments.getStart().toLocalDate())) {
-                    if (startTime.isAfter(appointments.getStart().toLocalTime()) && startTime.isBefore(appointments.getEnd().toLocalTime())) {
+
+        for (Appointments a : DBAppointments.getAllAppointments()) {
+            if (a.getCustomerId() == customer.getCustomerId()) {
+                if (startDate.equals(a.getStart().toLocalDate())) {
+                    if (startTime.isAfter(a.getStart().toLocalTime()) && startTime.isBefore(a.getEnd().toLocalTime())) {
                         Scheduling_Application.displayError("Overlapping appointment for current customer.");
-                        error.set(true);
+                        return true;
                     }
-                    else if (endTime.isAfter(appointments.getStart().toLocalTime()) && endTime.isBefore(appointments.getEnd().toLocalTime())) {
+                    else if (endTime.isAfter(a.getStart().toLocalTime()) && endTime.isBefore(a.getEnd().toLocalTime())) {
                         Scheduling_Application.displayError("Overlapping appointment for current customer.");
-                        error.set(true);
+                        return true;
+                    }
+                    else if (a.getStart().toLocalTime().isAfter(startTime) && a.getStart().toLocalTime().isBefore(endTime)) {
+                        Scheduling_Application.displayError("Overlapping appointment for current customer.");
+                        return true;
+                    }
+                    else if (a.getEnd().toLocalTime().isAfter(startTime) && a.getEnd().toLocalTime().isBefore(endTime)) {
+                        Scheduling_Application.displayError("Overlapping appointment for current customer.");
+                        return true;
                     }
                 }
             }
-        });
-        */
+        }
+
         return false;
 
     }
