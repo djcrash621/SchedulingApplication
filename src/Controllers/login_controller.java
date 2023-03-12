@@ -71,7 +71,7 @@ public class login_controller implements Initializable {
         boolean isApt = false;
 
         if (verify) {
-            output.println(LocalDateTime.now() + ": LOGIN ATTEMPT SUCCESSFUL.");
+            output.println(LocalDateTime.now() + ": LOGIN ATTEMPT SUCCESSFUL. USER: " + Scheduling_Application.activeUser.getUserName());
             output.close();
             Scheduling_Application.changePage(actionEvent,"../JavaFXML/welcome_page.fxml", "Welcome Page");
             for (Appointments apt : DBAppointments.getAllAppointments()) {

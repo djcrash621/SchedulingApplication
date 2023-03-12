@@ -234,7 +234,7 @@ public class Appointments {
      * Error checks the given date and time values to prevent illogical or overlapped time values.
      * @param startDate inputted appointment date.
      * @param startTime inputted appointment start time.
-     * @param endTime inputter appointment end time.
+     * @param endTime inputted appointment end time.
      * @return true if an error is found, false if not.
      */
     public static boolean errorCheckDates(LocalDate startDate, LocalTime startTime, LocalTime endTime, Customers customer) {
@@ -252,11 +252,13 @@ public class Appointments {
             return true;
         }
 
-
         for (Appointments a : DBAppointments.getAllAppointments()) {
             if (a.getCustomerId() == customer.getCustomerId()) {
                 if (startDate.equals(a.getStart().toLocalDate())) {
-                    if (startTime.isAfter(a.getStart().toLocalTime()) && startTime.isBefore(a.getEnd().toLocalTime())) {
+                    if(startTime.equals(a.getStart().toLocalTime()) && endTime.equals(a.getEnd().toLocalTime())) {
+                        Scheduling_Application.displayError("Overlapping appointment for current customer.");
+                        return true;
+                    } else if (startTime.isAfter(a.getStart().toLocalTime()) && startTime.isBefore(a.getEnd().toLocalTime())) {
                         Scheduling_Application.displayError("Overlapping appointment for current customer.");
                         return true;
                     }
